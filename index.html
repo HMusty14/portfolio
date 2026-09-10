@@ -440,32 +440,28 @@
     .ui-section-title em { font-style: italic; color: var(--sienna); }
     .ui-section-desc { font-size: 14px; line-height: 1.75; color: var(--walnut); opacity: 0.8; }
 
-    /* The horizontal scroll track */
+    /* UI cards — 3 equal columns */
     .ui-track-wrapper {
-      overflow: hidden;
-      position: relative;
+      padding: 0 48px 48px;
     }
     .ui-track {
-      display: flex;
-      gap: 24px;
-      padding: 0 48px 48px;
-      width: max-content;
-      will-change: transform;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
-
-    /* Individual horizontal card */
     .ui-hcard {
-      width: 480px;
-      flex-shrink: 0;
       position: relative;
       border-radius: 3px;
       overflow: hidden;
-      background: var(--walnut);
+      background: #2A2420;
       cursor: none;
+      display: flex;
+      flex-direction: column;
     }
     .ui-hcard-img-wrap {
-      height: 320px;
+      height: 280px;
       overflow: hidden;
+      position: relative;
     }
     .ui-hcard img {
       width: 100%; height: 100%;
@@ -474,10 +470,13 @@
       transition: transform 0.9s cubic-bezier(.23,1,.32,1), opacity 0.4s;
       display: block;
     }
-    .ui-hcard:hover img { transform: scale(1.07); opacity: 0.95; }
+    .ui-hcard:hover img { transform: scale(1.05); opacity: 0.95; }
     .ui-hcard-body {
-      padding: 28px 32px 32px;
+      padding: 24px 28px 28px;
       background: #2A2420;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     .ui-hcard-badge {
       font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
@@ -485,23 +484,42 @@
     }
     .ui-hcard-name {
       font-family: 'Playfair Display', serif;
-      font-size: 24px; font-weight: 700; color: #F0EBE3;
+      font-size: 22px; font-weight: 700; color: #F0EBE3;
       margin-bottom: 10px; line-height: 1.1;
     }
-    .ui-hcard-text { font-size: 13px; line-height: 1.65; color: rgba(245,240,232,0.55); }
-
-    /* scroll drag hint */
-    .ui-drag-hint {
-      display: flex; align-items: center; gap: 12px;
-      padding: 0 48px;
-      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--ink); opacity: 0.35; margin-bottom: 16px;
+    .ui-hcard-text { font-size: 13px; line-height: 1.65; color: rgba(245,240,232,0.55); flex: 1; }
+    .ui-view-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,0.4);
+      background: none;
+      border: 1px solid rgba(240,235,227,0.15);
+      padding: 8px 16px;
+      border-radius: 2px;
+      cursor: none;
+      transition: color 0.2s, border-color 0.2s;
+      width: fit-content;
+      font-family: 'DM Sans', sans-serif;
     }
-    .ui-drag-hint::before {
-      content: '';
-      display: block; width: 32px; height: 1px;
-      background: var(--ink);
+    .ui-view-all:hover {
+      color: #F0EBE3;
+      border-color: rgba(240,235,227,0.4);
     }
+    .ui-view-all::after { content: '↗'; font-size: 13px; }
+    .ui-view-hint {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: white; background: rgba(181,64,42,0.85);
+      backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 2px;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .ui-hcard:hover .ui-view-hint { opacity: 1; }
 
     /* ─────────────────────────────────────
        STATS BAND
@@ -681,42 +699,29 @@
       font-family: 'DM Sans', sans-serif;
     }
 
-    /* ── EDITIONS THUMBNAIL CARD ── */
-    .editions-card {
-      width: 560px; flex-shrink: 0;
-      position: relative; border-radius: 3px;
-      overflow: hidden; background: #2A2420;
-      cursor: none;
+    /* editions-card inherits .ui-hcard */
+    .nhn-hero-link { text-decoration: none; display: block; }
+    .nhn-hero-link:hover .case-study-hero img { opacity: 1; transform: scale(1.03); }
+    .nhn-hero-link .case-study-hero::after {
+      content: 'Visit site ↗';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: white;
+      background: rgba(139,105,20,0.85);
+      backdrop-filter: blur(8px);
+      padding: 10px 22px;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
     }
-    .editions-thumb-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 220px 130px;
-      gap: 2px;
-    }
-    .editions-thumb-grid img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: top;
-      display: block;
-      transition: transform 0.7s cubic-bezier(.23,1,.32,1), opacity 0.3s;
-      opacity: 0.85;
-    }
-    .editions-thumb-grid img:first-child {
-      grid-column: span 2;
-    }
-    .editions-card:hover .editions-thumb-grid img { opacity: 1; }
-    .editions-open-hint {
-      position: absolute; top: 16px; right: 16px;
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: white; background: rgba(181,64,42,0.85);
-      backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 2px;
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .editions-card:hover .editions-open-hint { opacity: 1; }
-    .editions-card .ui-hcard-body {
-      padding: 28px 32px 32px;
-      background: #2A2420;
-    }
+    .nhn-hero-link:hover .case-study-hero::after { opacity: 1; }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -741,7 +746,8 @@
       .nhn-split { grid-template-columns: 1fr; }
       .ui-section-header { grid-template-columns: 1fr; margin: 0 24px; }
       .ui-track { padding: 0 24px 48px; }
-      .ui-hcard { width: 320px; }
+      .ui-track { grid-template-columns: 1fr; }
+      .ui-track-wrapper { padding: 0 24px 48px; }
       .ui-drag-hint { padding: 0 24px; }
       .stats-band { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
       .contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
@@ -876,6 +882,7 @@
 
     <!-- CASE STUDY 02: NHN -->
     <div class="case-study reveal" style="margin-top: 32px;">
+      <a href="https://nhnhorizon.com" target="_blank" rel="noopener" style="display:block; cursor:none;" class="nhn-hero-link">
       <div class="case-study-hero" style="background: #0E1E2E;">
         <img src="NHNHorizon.jpeg" alt="NHN Horizon" loading="lazy" style="object-position: center top;" />
         <div class="case-study-hero-overlay"></div>
@@ -885,6 +892,7 @@
           <span class="case-study-meta-hero">NHN Horizon<br>Commodity Trading Platform</span>
         </div>
       </div>
+      </a>
       <div class="case-study-body">
         <div class="cs-main">
           <h3 class="cs-title cs-title-nhn">NHN Horizon</h3>
@@ -952,7 +960,1013 @@
         </div>
         <p class="ui-section-desc">Three campaigns delivered across the JLR engagement — each requiring fast execution, sharp brand alignment, and a premium feel. Less strategic depth, more craft and delivery.</p>
       </div>
-      <p class="ui-drag-hint">Drag to explore</p>
+      <div class="ui-track-wrapper">
+        <div class="ui-track" id="ui-track">
+
+          <!-- LONDON EDITIONS -->
+          <div class="editions-card ui-hcard" id="editions-card">
+            <div class="ui-hcard-img-wrap">
+              <img id="et-0" alt="London Editions Overview" style="object-position: top;" />
+              <span class="ui-view-hint">View all</span>
+            </div>
+            <div class="ui-hcard-body">
+              <span class="ui-hcard-badge">UI Design · Asset Integration</span>
+              <div class="ui-hcard-name">London Editions</div>
+              <div class="ui-hcard-text">Working with a copywriter and UX designer, I brought the creative direction to life through considered asset integration and UI execution — a light, airy site with a modern luxury feel.</div>
+              <button class="ui-view-all" id="editions-open-btn">View all 5 screens</button>
+            </div>
+          </div>
+
+          <!-- RANGE ROVER EVENT -->
+          <div class="ui-hcard" id="event-card">
+            <div class="ui-hcard-img-wrap">
+              <img src="RANGE ROVER - LTO Banner-1.png" alt="Range Rover Event" loading="lazy" style="object-fit: contain; background: #1a1210;" />
+              <span class="ui-view-hint">View all</span>
+            </div>
+            <div class="ui-hcard-body">
+              <span class="ui-hcard-badge">UI Design · Campaign</span>
+              <div class="ui-hcard-name">Range Rover Event</div>
+              <div class="ui-hcard-text">Each page rooted in a different part of London. The challenge: distinct character per section while maintaining the cohesion and refinement the brand demands.</div>
+              <button class="ui-view-all" id="event-open-btn">View all 2 banners</button>
+            </div>
+          </div>
+
+          <!-- PROMOTIONAL CONTENT -->
+          <div class="ui-hcard" id="promo-card">
+            <div class="ui-hcard-img-wrap">
+              <img src="CFS 1.png" alt="Promotional Content" loading="lazy" style="object-position: top;" />
+              <span class="ui-view-hint">View all</span>
+            </div>
+            <div class="ui-hcard-body">
+              <span class="ui-hcard-badge">Production · Brand</span>
+              <div class="ui-hcard-name">Promotional Content</div>
+              <div class="ui-hcard-text">Fast-turnaround pieces for Goodwood FoS and the Chelsea Flower Show — sharp eye for brand alignment, moving quickly without compromising quality.</div>
+              <button class="ui-view-all" id="promo-open-btn">View all 3 pieces</button>
+            </div>
+          </div>
+
+        </div>
+      </div>tml lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haleem Mustapha — Interaction Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment: #1E1A17;
+      --ink: #F0EBE3;
+      --sienna: #B5402A;
+      --sand: #8C6B52;
+      --walnut: #C4B8AA;
+      --teal: #8FA68C;
+      --nhn-agri: #4A7A55;
+      --nhn-oil: #2A4A6B;
+      --nhn-accent: #B5402A;
+    }
+
+    html, body { scroll-behavior: auto; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─────────────────────────────────────
+       CUSTOM CURSOR
+    ───────────────────────────────────── */
+    #cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 8px; height: 8px;
+      background: var(--sienna);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
+    }
+    #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--sienna);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.35s cubic-bezier(.23,1,.32,1),
+                  height 0.35s cubic-bezier(.23,1,.32,1),
+                  border-color 0.2s, opacity 0.2s;
+      opacity: 0.6;
+    }
+    /* Cursor states */
+    body.cursor-hover #cursor-dot  { width: 6px; height: 6px; opacity: 0.4; }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; opacity: 1; border-color: var(--ink); }
+    body.cursor-link  #cursor-dot  { width: 48px; height: 48px; background: var(--sienna); opacity: 0.15; }
+    body.cursor-link  #cursor-ring { width: 48px; height: 48px; opacity: 0; }
+
+    /* ─────────────────────────────────────
+       NAV
+    ───────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+      cursor: none;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      cursor: none;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--sienna);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─────────────────────────────────────
+       HERO
+    ───────────────────────────────────── */
+    .hero {
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sienna);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    /* Headline split into spans for per-word parallax */
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(64px, 10vw, 140px);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+      will-change: transform;
+    }
+    .hero-headline em { font-style: italic; color: var(--sienna); }
+    .hero-sub {
+      margin-top: 36px;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 420px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.8s forwards;
+      color: var(--walnut);
+      will-change: transform;
+    }
+    .hero-accent {
+      position: absolute;
+      top: 0; right: 0;
+      width: 6px; height: 100%;
+      background: var(--sienna);
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 80px; right: 56px;
+      writing-mode: vertical-rl;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.8s 1.4s forwards;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px; height: 56px;
+      background: var(--ink);
+      opacity: 0.25;
+    }
+
+    /* ─────────────────────────────────────
+       SHARED
+    ───────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sienna);
+      margin-bottom: 24px;
+    }
+
+    /* ─────────────────────────────────────
+       ABOUT
+    ───────────────────────────────────── */
+    .about {
+      padding: 140px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      border-top: 1px solid rgba(240,235,227,0.08);
+    }
+    .about-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .about-headline em { font-style: italic; color: var(--sienna); }
+    .about-body { font-size: 15px; line-height: 1.85; color: var(--walnut); }
+    .about-body p + p { margin-top: 18px; }
+    .skills-list { margin-top: 36px; display: grid; grid-template-columns: 1fr; gap: 0; }
+    .skill-item {
+      font-size: 13px;
+      color: var(--ink);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(240,235,227,0.07);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .skill-item::before { content: '—'; color: var(--sienna); font-size: 10px; }
+
+    /* ─────────────────────────────────────
+       WORK INTRO
+    ───────────────────────────────────── */
+    .work-intro {
+      padding: 80px 48px 0;
+      border-top: 1px solid rgba(240,235,227,0.08);
+    }
+    .work-intro-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+    }
+    .work-intro-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+    .work-intro-note {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--walnut);
+      max-width: 320px;
+      padding-bottom: 8px;
+      opacity: 0.75;
+    }
+
+    /* ─────────────────────────────────────
+       CASE STUDY SHELL
+    ───────────────────────────────────── */
+    .case-study {
+      margin: 60px 48px 0;
+      border: 1px solid rgba(240,235,227,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .case-study-hero {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+    }
+    .case-study-hero img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.75;
+      transition: transform 1.2s cubic-bezier(.23,1,.32,1), opacity 0.4s;
+      will-change: transform;
+    }
+    .case-study:hover .case-study-hero img { transform: scale(1.06); opacity: 0.9; }
+    .case-study-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(18,14,11,0.82) 0%, transparent 55%);
+    }
+    .case-study-hero-content {
+      position: absolute;
+      bottom: 48px; left: 52px; right: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .case-study-counter {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 120px;
+      font-weight: 900;
+      color: white;
+      opacity: 0.1;
+      position: absolute;
+      top: 24px; right: 40px;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .cs-badge {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: white;
+      backdrop-filter: blur(8px);
+      padding: 7px 16px;
+      border-radius: 2px;
+    }
+    .cs-badge-teal { background: rgba(26,138,138,0.75); }
+    .cs-badge-nhn  { background: rgba(139,105,20,0.8); }
+    .case-study-meta-hero {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      text-align: right;
+    }
+    .case-study-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .cs-main {
+      padding: 56px 52px;
+      border-right: 1px solid rgba(240,235,227,0.07);
+    }
+    .cs-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .cs-title-teal { color: var(--teal); }
+    .cs-title-nhn  { color: var(--nhn-accent); }
+    .cs-client {
+      font-size: 12px; letter-spacing: 0.12em;
+      text-transform: uppercase; opacity: 0.45; margin-bottom: 28px;
+    }
+    .cs-desc { font-size: 15px; line-height: 1.85; color: var(--walnut); margin-bottom: 32px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag-pill {
+      font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 5px 13px; border-radius: 100px;
+    }
+    .tag-teal { border: 1px solid rgba(26,138,138,0.35); color: var(--teal); }
+    .tag-nhn  { border: 1px solid rgba(139,105,20,0.35); color: var(--nhn-accent); }
+    .cs-sidebar { padding: 56px 52px; background: rgba(240,235,227,0.03); }
+    .sidebar-label {
+      font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--sienna); margin-bottom: 20px;
+    }
+    .brief-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 17px; line-height: 1.6;
+      color: var(--ink); padding-left: 20px; margin-bottom: 40px;
+    }
+    .brief-quote-teal { border-left: 3px solid var(--teal); }
+    .brief-quote-nhn  { border-left: 3px solid var(--nhn-accent); }
+    .stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px 32px; margin-bottom: 40px;
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px; font-weight: 900; line-height: 1; color: var(--ink);
+    }
+    .stat-desc { font-size: 12px; line-height: 1.5; color: var(--walnut); opacity: 0.7; margin-top: 6px; }
+    .divider { border: none; border-top: 1px solid rgba(240,235,227,0.07); margin: 32px 0; }
+    .rec-item {
+      display: flex; gap: 20px;
+      padding: 16px 0; border-bottom: 1px solid rgba(240,235,227,0.05);
+    }
+    .rec-item:last-child { border-bottom: none; }
+    .rec-number {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 22px; font-weight: 700;
+      opacity: 0.4; flex-shrink: 0; width: 24px; margin-top: 2px;
+    }
+    .rec-number-teal { color: var(--teal); }
+    .rec-number-nhn  { color: var(--nhn-accent); }
+    .rec-text { font-size: 13px; line-height: 1.6; color: var(--walnut); }
+    .rec-text strong { display: block; font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+
+    /* ─────────────────────────────────────
+       NHN SPLIT PANEL
+    ───────────────────────────────────── */
+    .nhn-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2px; }
+    .nhn-panel {
+      position: relative; padding: 40px 44px 44px;
+      overflow: hidden; min-height: 280px;
+    }
+    .nhn-panel-agri { background: var(--nhn-agri); }
+    .nhn-panel-oil  { background: var(--nhn-oil); }
+    .nhn-panel-label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+    .nhn-panel-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: white; margin-bottom: 14px; line-height: 1.1; }
+    .nhn-panel-desc { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.65); max-width: 280px; }
+    .nhn-panel-icon { position: absolute; bottom: 28px; right: 32px; font-size: 64px; opacity: 0.12; line-height: 1; pointer-events: none; }
+    .nhn-panel-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+    .nhn-panel-tag {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.65);
+    }
+    .nhn-live-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 28px; font-size: 12px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: white; text-decoration: none;
+      opacity: 0.6; transition: opacity 0.2s, gap 0.25s; cursor: none;
+    }
+    .nhn-live-link:hover { opacity: 1; gap: 14px; }
+    .nhn-live-link::after { content: '↗'; font-size: 14px; }
+
+    /* ─────────────────────────────────────
+       UI COLLECTION — HORIZONTAL SCROLL
+    ───────────────────────────────────── */
+    .ui-section { margin: 80px 0 0; }
+    .ui-section-header {
+      margin: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(240,235,227,0.08);
+    }
+    .ui-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 900; line-height: 1; letter-spacing: -0.02em;
+    }
+    .ui-section-title em { font-style: italic; color: var(--sienna); }
+    .ui-section-desc { font-size: 14px; line-height: 1.75; color: var(--walnut); opacity: 0.8; }
+
+    /* UI cards — 3 equal columns */
+    .ui-track-wrapper {
+      padding: 0 48px 48px;
+    }
+    .ui-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .ui-hcard {
+      position: relative;
+      border-radius: 3px;
+      overflow: hidden;
+      background: #2A2420;
+      cursor: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .ui-hcard-img-wrap {
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+    }
+    .ui-hcard img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+      transition: transform 0.9s cubic-bezier(.23,1,.32,1), opacity 0.4s;
+      display: block;
+    }
+    .ui-hcard:hover img { transform: scale(1.05); opacity: 0.95; }
+    .ui-hcard-body {
+      padding: 24px 28px 28px;
+      background: #2A2420;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .ui-hcard-badge {
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--sienna); margin-bottom: 10px; display: block;
+    }
+    .ui-hcard-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: #F0EBE3;
+      margin-bottom: 10px; line-height: 1.1;
+    }
+    .ui-hcard-text { font-size: 13px; line-height: 1.65; color: rgba(245,240,232,0.55); flex: 1; }
+    .ui-view-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,0.4);
+      background: none;
+      border: 1px solid rgba(240,235,227,0.15);
+      padding: 8px 16px;
+      border-radius: 2px;
+      cursor: none;
+      transition: color 0.2s, border-color 0.2s;
+      width: fit-content;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .ui-view-all:hover {
+      color: #F0EBE3;
+      border-color: rgba(240,235,227,0.4);
+    }
+    .ui-view-all::after { content: '↗'; font-size: 13px; }
+    .ui-view-hint {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: white; background: rgba(181,64,42,0.85);
+      backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 2px;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .ui-hcard:hover .ui-view-hint { opacity: 1; }
+
+    /* ─────────────────────────────────────
+       STATS BAND
+    ───────────────────────────────────── */
+    .stats-band {
+      margin-top: 80px;
+      background: #131009;
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    .band-stat { border-left: 2px solid var(--sienna); padding-left: 24px; }
+    .band-stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 60px);
+      font-weight: 900; color: #F0EBE3; line-height: 1;
+    }
+    .band-stat-label {
+      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--sand); margin-top: 10px; opacity: 0.7; line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────
+       CONTACT
+    ───────────────────────────────────── */
+    .contact {
+      padding: 140px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: end;
+      border-top: 1px solid rgba(240,235,227,0.08);
+    }
+    .contact-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 900; line-height: 0.93; letter-spacing: -0.02em;
+    }
+    .contact-headline em { font-style: italic; color: var(--sienna); }
+    .contact-body { font-size: 15px; line-height: 1.8; color: var(--walnut); margin-bottom: 40px; }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 14px; color: var(--ink); text-decoration: none;
+      letter-spacing: 0.04em; transition: gap 0.25s; cursor: none;
+    }
+    .contact-link:hover { gap: 26px; }
+    .contact-link::before { content: '→'; color: var(--sienna); font-size: 16px; }
+
+    /* ─────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────── */
+    footer {
+      background: #131009;
+      padding: 36px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer span { font-size: 12px; letter-spacing: 0.08em; color: var(--sand); opacity: 0.55; }
+
+    /* ─────────────────────────────────────
+       REVEAL (scroll-triggered)
+    ───────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.85s cubic-bezier(.23,1,.32,1),
+                  transform 0.85s cubic-bezier(.23,1,.32,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.22s; }
+    .reveal-d3 { transition-delay: 0.36s; }
+
+    /* Clip reveal for case study heroes */
+    .clip-reveal {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 1s cubic-bezier(.77,0,.18,1);
+    }
+    .clip-reveal.visible { clip-path: inset(0% 0 0 0); }
+
+    /* Text line reveal */
+    .line-wrap { overflow: hidden; }
+    .line-inner {
+      display: block;
+      transform: translateY(110%);
+      transition: transform 0.9s cubic-bezier(.77,0,.18,1);
+    }
+    .line-inner.visible { transform: translateY(0); }
+
+
+    /* ── LIGHTBOX ── */
+    #lb-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(14,11,9,0.97);
+      backdrop-filter: blur(10px);
+      flex-direction: column;
+    }
+    #lb-overlay.open { display: flex; }
+    #lb-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 72px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(240,235,227,0.07);
+    }
+    #lb-topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 17px;
+      color: rgba(240,235,227,0.7);
+    }
+    #lb-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    #lb-esc-hint {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,0.25);
+      font-family: 'DM Sans', sans-serif;
+    }
+    #lb-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,235,227,0.2);
+      background: rgba(240,235,227,0.05);
+      color: rgba(240,235,227,0.7);
+      font-size: 18px;
+      cursor: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1;
+    }
+    #lb-close:hover {
+      background: rgba(181,64,42,0.2);
+      border-color: #B5402A;
+      color: #F0EBE3;
+    }
+    #lb-scroll-track {
+      display: flex;
+      gap: 20px;
+      padding: 40px 48px 48px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      align-items: flex-start;
+      width: 100vw;
+      flex: 1;
+    }
+    #lb-scroll-track::-webkit-scrollbar { display: none; }
+    .lb-img-item {
+      flex-shrink: 0;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .lb-img-item img {
+      width: 100%;
+      border-radius: 3px;
+      display: block;
+    }
+    .lb-img-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,0.35);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* editions-card inherits .ui-hcard */
+    .nhn-hero-link { text-decoration: none; display: block; }
+    .nhn-hero-link:hover .case-study-hero img { opacity: 1; transform: scale(1.03); }
+    .nhn-hero-link .case-study-hero::after {
+      content: 'Visit site ↗';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: white;
+      background: rgba(139,105,20,0.85);
+      backdrop-filter: blur(8px);
+      padding: 10px 22px;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .nhn-hero-link:hover .case-study-hero::after { opacity: 1; }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ─────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────── */
+    @media (max-width: 960px) {
+      body { cursor: auto; }
+      #cursor-dot, #cursor-ring { display: none; }
+      nav { padding: 20px 24px; }
+      .hero { padding: 0 24px 60px; }
+      .about { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+      .work-intro { padding: 60px 24px 0; }
+      .work-intro-inner { flex-direction: column; align-items: flex-start; }
+      .case-study { margin: 40px 24px 0; }
+      .case-study-hero { height: 300px; }
+      .case-study-hero-content { bottom: 28px; left: 24px; right: 24px; }
+      .case-study-counter { font-size: 80px; top: 16px; right: 20px; }
+      .case-study-body { grid-template-columns: 1fr; }
+      .cs-main { border-right: none; border-bottom: 1px solid rgba(240,235,227,0.07); padding: 40px 28px; }
+      .cs-sidebar { padding: 40px 28px; }
+      .nhn-split { grid-template-columns: 1fr; }
+      .ui-section-header { grid-template-columns: 1fr; margin: 0 24px; }
+      .ui-track { padding: 0 24px 48px; }
+      .ui-track { grid-template-columns: 1fr; }
+      .ui-track-wrapper { padding: 0 24px 48px; }
+      .ui-drag-hint { padding: 0 24px; }
+      .stats-band { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
+      .contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+      footer { flex-direction: column; gap: 10px; padding: 28px 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .clip-reveal, .line-inner,
+      .hero-eyebrow, .hero-headline, .hero-sub, .hero-scroll-hint {
+        opacity: 1 !important; transform: none !important; clip-path: none !important;
+        animation: none !important; transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="nav-logo" href="#">HM</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-accent"></div>
+    <p class="hero-eyebrow">UX/UI Designer · 2026</p>
+    <h1 class="hero-headline" id="hero-headline">
+      Haleem<br><em>Mustapha</em>
+    </h1>
+    <p class="hero-sub" id="hero-sub">
+      Product Designer with a background in industrial design. I think in systems, design with intent, and build things that work.
+    </p>
+    <div class="hero-scroll-hint">Scroll</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="reveal">
+      <p class="section-label">About</p>
+      <h2 class="about-headline">Cross-discipline.<br><em>End to end.</em></h2>
+    </div>
+    <div class="reveal reveal-d1">
+      <div class="about-body">
+        <p>I studied Product Design at Loughborough University, which means I came into digital with a grounding in design thinking, systems, and how things actually get made. That industrial design background changes how I approach problems — I'm not just designing screens, I'm thinking about the whole experience.</p>
+        <p>Currently at Accenture, embedded in JLR's digital team. I move between UX strategy and UI delivery without losing the thread — comfortable with ambiguity at the start of a project, precise at the end.</p>
+      </div>
+      <div class="skills-list" style="margin-top: 36px;">
+        <div class="skill-item">UX Design</div>
+        <div class="skill-item">UI Design</div>
+        <div class="skill-item">User Research</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="work-intro reveal">
+      <div class="work-intro-inner">
+        <h2 class="work-intro-title">Selected<br>Work</h2>
+        <p class="work-intro-note">Two UX case studies and a body of UI work — spanning enterprise UX strategy, full site builds, and brand campaigns for one of the world's most premium automotive brands.</p>
+      </div>
+    </div>
+
+    <!-- CASE STUDY 01 -->
+    <div class="case-study reveal">
+      <div class="case-study-hero" style="background: var(--walnut);">
+        <img src="AU_-thumbnail.png" alt="JLR Approved Used" loading="lazy" style="object-position: center top;" />
+        <div class="case-study-hero-overlay"></div>
+        <span class="case-study-counter">01</span>
+        <div class="case-study-hero-content">
+          <span class="cs-badge cs-badge-teal">UX Case Study</span>
+          <span class="case-study-meta-hero">JLR · Range Rover &amp; Land Rover<br>April 2026 – Present</span>
+        </div>
+      </div>
+      <div class="case-study-body">
+        <div class="cs-main">
+          <h3 class="cs-title cs-title-teal">Approved Used</h3>
+          <p class="cs-client">JLR · UX/UI Designer · Accenture · April 2026 – Present</p>
+          <p class="cs-desc">JLR had a growing backlog of approved used stock. With retailers unable to bring in new vehicles until existing inventory moved, shifting approved used became a commercial priority — not just a UX one. My role was to audit the current digital entry points across Range Rover and Land Rover, understand why users weren't engaging with approved used, and propose changes grounded in data.</p>
+          <div class="tag-row">
+            <span class="tag-pill tag-teal">UX Audit</span>
+            <span class="tag-pill tag-teal">Analytics</span>
+            <span class="tag-pill tag-teal">Competitor Analysis</span>
+            <span class="tag-pill tag-teal">CX Strategy</span>
+            <span class="tag-pill tag-teal">Heatmapping</span>
+          </div>
+        </div>
+        <div class="cs-sidebar">
+          <p class="sidebar-label">The Brief</p>
+          <blockquote class="brief-quote brief-quote-teal">"Assess the current entry points and identify opportunities to boost visibility primarily across Range Rover and Land Rover DX sites."</blockquote>
+          <p class="sidebar-label">The Problem</p>
+          <p style="font-size:13px; line-height:1.7; color:var(--walnut); margin-bottom:32px;">JLR's approved used backlog was blocking retailers from taking in new stock. To unlock the pipeline, they needed to sell more approved used vehicles — which meant making that option visible and compelling to users who were arriving on new car pages.</p>
+          <p class="sidebar-label">Key Findings</p>
+          <div class="rec-item" style="border-color: rgba(240,235,227,0.05);">
+            <span class="rec-number rec-number-teal">—</span>
+            <div class="rec-text"><strong>Significant crossover between new and approved used audiences</strong>A meaningful proportion of users arriving on new car pages were already considering approved used — the opportunity wasn't being captured.</div>
+          </div>
+          <div class="rec-item" style="border-color: rgba(240,235,227,0.05);">
+            <span class="rec-number rec-number-teal">—</span>
+            <div class="rec-text"><strong>New car entry points drove more approved used sessions than dedicated DX</strong>Users were arriving at approved used via new car pages far more than via dedicated approved used entry points — suggesting the DX wasn't doing the work.</div>
+          </div>
+          <div class="rec-item" style="border-color: rgba(240,235,227,0.05);">
+            <span class="rec-number rec-number-teal">—</span>
+            <div class="rec-text"><strong>Drop-off between PLP and PDP was a key point of failure</strong>Users browsing approved used listings weren't converting through to product pages — pointing to a gap in perceived value at the listing level.</div>
+          </div>
+          <hr class="divider" />
+          <p class="sidebar-label">Recommendations</p>
+          <div class="rec-item">
+            <span class="rec-number rec-number-teal">1</span>
+            <div class="rec-text"><strong>Build a considered journey into approved used</strong>Rather than dropping CTAs into the new car flow, guide users through the value of approved used first — why it exists, what they get — then route them to the order site once they're informed and bought in.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number rec-number-teal">2</span>
+            <div class="rec-text"><strong>Combine new &amp; approved used on results pages</strong>Reduce the cognitive switch required — surface both options together so users can make an active, informed choice rather than having to navigate away.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number rec-number-teal">3</span>
+            <div class="rec-text"><strong>Surface vehicle value on PDP earlier</strong>Lead with specs, features, and selling points higher in the page — give users a reason to commit before they reach the CTA.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE STUDY 02: NHN -->
+    <div class="case-study reveal" style="margin-top: 32px;">
+      <a href="https://nhnhorizon.com" target="_blank" rel="noopener" style="display:block; cursor:none;" class="nhn-hero-link">
+      <div class="case-study-hero" style="background: #0E1E2E;">
+        <img src="NHNHorizon.jpeg" alt="NHN Horizon" loading="lazy" style="object-position: center top;" />
+        <div class="case-study-hero-overlay"></div>
+        <span class="case-study-counter">02</span>
+        <div class="case-study-hero-content">
+          <span class="cs-badge cs-badge-nhn">UX · Full Site Build</span>
+          <span class="case-study-meta-hero">NHN Horizon<br>Commodity Trading Platform</span>
+        </div>
+      </div>
+      </a>
+      <div class="case-study-body">
+        <div class="cs-main">
+          <h3 class="cs-title cs-title-nhn">NHN Horizon</h3>
+          <p class="cs-client">Commodity Trading · UX Design &amp; Web Build</p>
+          <p class="cs-desc">A full website design for a commodity trading company operating across two distinct markets — agriculture and oil &amp; gas. The client had strict requirements for the design language to feel familiar to their industry: competitors in this space typically run static, linear sites with a formal, information-led tone. The core challenge was honouring that brief whilst delivering one unified platform that gave each audience a genuinely tailored experience without fragmenting the brand.</p>
+          <div class="tag-row">
+            <span class="tag-pill tag-nhn">UX Strategy</span>
+            <span class="tag-pill tag-nhn">Web Design</span>
+            <span class="tag-pill tag-nhn">Competitor Research</span>
+            <span class="tag-pill tag-nhn">Dual Audience</span>
+            <span class="tag-pill tag-nhn">Brand Design</span>
+          </div>
+          <a class="nhn-live-link" href="https://nhnhorizon.com" target="_blank" rel="noopener" style="color: var(--nhn-accent);">View live site</a>
+        </div>
+        <div class="cs-sidebar">
+          <p class="sidebar-label">The Brief</p>
+          <blockquote class="brief-quote brief-quote-nhn">"Build a single platform for a commodity trading company that provides two distinct experiences — one for agriculture, one for oil and gas — whilst feeling native to the industry."</blockquote>
+          <p class="sidebar-label">The Challenge</p>
+          <div class="rec-item">
+            <span class="rec-number rec-number-nhn">—</span>
+            <div class="rec-text"><strong>Design language constrained by convention</strong>Competitors in commodity trading run static, linear sites with a formal, information-led tone. The client needed to sit comfortably in that landscape — familiar enough to build trust, considered enough to stand out.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number rec-number-nhn">—</span>
+            <div class="rec-text"><strong>One brand, two audiences</strong>Agriculture and oil &amp; gas clients have different expectations, vocabularies, and trust signals. The site needed to feel native to both without splitting into two separate products.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number rec-number-nhn">—</span>
+            <div class="rec-text"><strong>Competitor research across both sectors</strong>Benchmarked trading platforms in agriculture and energy to understand conventions, identify gaps, and inform the visual and structural decisions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="nhn-split">
+        <div class="nhn-panel nhn-panel-agri">
+          <p class="nhn-panel-label">Experience 01</p>
+          <h4 class="nhn-panel-title">Agriculture</h4>
+          <p class="nhn-panel-desc">Grounded in trust and provenance — an earthy, assured visual language that speaks the language of agricultural commodity traders. Warm tones, clear market information, and a tone of reliable expertise.</p>
+          <div class="nhn-panel-tags">
+            <span class="nhn-panel-tag">Grains &amp; Soft Commodities</span>
+            <span class="nhn-panel-tag">Supply Chain</span>
+            <span class="nhn-panel-tag">Market Data</span>
+          </div>
+          <span class="nhn-panel-icon">🌾</span>
+        </div>
+        <div class="nhn-panel nhn-panel-oil">
+          <p class="nhn-panel-label">Experience 02</p>
+          <h4 class="nhn-panel-title">Oil &amp; Gas</h4>
+          <p class="nhn-panel-desc">Precise, technical, and commanding — a darker, industrial feel that meets the expectations of energy sector professionals. Clean data hierarchy, authoritative tone, and a focus on scale and reliability.</p>
+          <div class="nhn-panel-tags">
+            <span class="nhn-panel-tag">Crude &amp; Refined Products</span>
+            <span class="nhn-panel-tag">Energy Markets</span>
+            <span class="nhn-panel-tag">Global Trade</span>
+          </div>
+          <span class="nhn-panel-icon">⚡</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- UI COLLECTION — HORIZONTAL -->
+    <div class="ui-section reveal">
+      <div class="ui-section-header">
+        <div>
+          <p class="section-label">UI Work</p>
+          <h2 class="ui-section-title">Range Rover<br><em>UI Collection</em></h2>
+        </div>
+        <p class="ui-section-desc">Three campaigns delivered across the JLR engagement — each requiring fast execution, sharp brand alignment, and a premium feel. Less strategic depth, more craft and delivery.</p>
+      </div>
       <div class="ui-track-wrapper">
         <div class="ui-track" id="ui-track">
                     <div class="editions-card" id="editions-card">
@@ -969,10 +1983,10 @@
             </div>
           </div>
 
-          <!-- LIGHTBOX -->
-          <div id="lb-overlay">
+          <!-- LIGHTBOXES -->
+          <div id="lb-overlay" data-lb="">
             <div id="lb-topbar">
-              <span id="lb-topbar-title">London Editions — UI Collection</span>
+              <span id="lb-topbar-title"></span>
               <div id="lb-topbar-right">
                 <span id="lb-esc-hint">Press Esc to close</span>
                 <button id="lb-close">✕</button>
@@ -1213,105 +2227,92 @@
     splitObs.observe(nhnSplit);
   }
   
-  // ── EDITIONS LIGHTBOX ────────────────────────────────
-  var editionImgs = [
-    'editions-overview.png',
-    'editions-westminster.png',
-    'editions-belgravia.png',
-    'editions-battersea.png',
-    'editions-hoxton.png'
-  ];
-  var editionLabels = ['Overview', 'Westminster Edition', 'Belgravia Edition', 'Battersea Edition', 'Hoxton Edition'];
+  // ── UI LIGHTBOXES ────────────────────────────────────
+  var lbData = {
+    editions: {
+      title: 'London Editions — UI Collection',
+      imgs: [
+        { src: 'editions-overview.png',    label: 'Overview' },
+        { src: 'editions-westminster.png', label: 'Westminster Edition' },
+        { src: 'editions-belgravia.png',   label: 'Belgravia Edition' },
+        { src: 'editions-battersea.png',   label: 'Battersea Edition' },
+        { src: 'editions-hoxton.png',      label: 'Hoxton Edition' }
+      ]
+    },
+    event: {
+      title: 'Range Rover Event — Banners',
+      imgs: [
+        { src: 'RANGE ROVER - LTO Banner.png',   label: 'LTO Banner' },
+        { src: 'RANGE ROVER - LTO Banner-1.png', label: 'LTO Banner 2' }
+      ]
+    },
+    promo: {
+      title: 'Promotional Content',
+      imgs: [
+        { src: 'CFS 1.png',                  label: 'Chelsea Flower Show' },
+        { src: 'Range Rover SV Ultra 1.png', label: 'Range Rover SV Ultra' },
+        { src: 'Goodwood FoS.png',           label: 'Goodwood Festival of Speed' }
+      ]
+    }
+  };
 
-  // Thumbnails
-  document.getElementById('et-0').src = editionImgs[0];
-  document.getElementById('et-1').src = editionImgs[1];
-  document.getElementById('et-2').src = editionImgs[2];
+  // Set editions thumbnail
+  document.getElementById('et-0').src = lbData.editions.imgs[0].src;
 
   var lbOverlay = document.getElementById('lb-overlay');
   var lbTrack   = document.getElementById('lb-scroll-track');
+  var lbTitle   = document.getElementById('lb-topbar-title');
 
-  function buildLightbox() {
+  function openLightbox(key) {
+    var data = lbData[key];
+    lbTitle.textContent = data.title;
     lbTrack.innerHTML = '';
-      var item0 = document.createElement('div');
-      item0.className = 'lb-img-item';
-      var img0 = document.createElement('img');
-      img0.src = editionImgs[0];
-      img0.alt = editionLabels[0];
-      var lbl0 = document.createElement('span');
-      lbl0.className = 'lb-img-label';
-      lbl0.textContent = editionLabels[0];
-      item0.appendChild(img0); item0.appendChild(lbl0);
-      lbTrack.appendChild(item0);
-      var item1 = document.createElement('div');
-      item1.className = 'lb-img-item';
-      var img1 = document.createElement('img');
-      img1.src = editionImgs[1];
-      img1.alt = editionLabels[1];
-      var lbl1 = document.createElement('span');
-      lbl1.className = 'lb-img-label';
-      lbl1.textContent = editionLabels[1];
-      item1.appendChild(img1); item1.appendChild(lbl1);
-      lbTrack.appendChild(item1);
-      var item2 = document.createElement('div');
-      item2.className = 'lb-img-item';
-      var img2 = document.createElement('img');
-      img2.src = editionImgs[2];
-      img2.alt = editionLabels[2];
-      var lbl2 = document.createElement('span');
-      lbl2.className = 'lb-img-label';
-      lbl2.textContent = editionLabels[2];
-      item2.appendChild(img2); item2.appendChild(lbl2);
-      lbTrack.appendChild(item2);
-      var item3 = document.createElement('div');
-      item3.className = 'lb-img-item';
-      var img3 = document.createElement('img');
-      img3.src = editionImgs[3];
-      img3.alt = editionLabels[3];
-      var lbl3 = document.createElement('span');
-      lbl3.className = 'lb-img-label';
-      lbl3.textContent = editionLabels[3];
-      item3.appendChild(img3); item3.appendChild(lbl3);
-      lbTrack.appendChild(item3);
-      var item4 = document.createElement('div');
-      item4.className = 'lb-img-item';
-      var img4 = document.createElement('img');
-      img4.src = editionImgs[4];
-      img4.alt = editionLabels[4];
-      var lbl4 = document.createElement('span');
-      lbl4.className = 'lb-img-label';
-      lbl4.textContent = editionLabels[4];
-      item4.appendChild(img4); item4.appendChild(lbl4);
-      lbTrack.appendChild(item4);
-  }
-
-  // Drag scroll on the track
-  var lbDragging = false, lbStartX, lbScrollLeft;
-  lbTrack.addEventListener('mousedown', function(e) {
-    lbDragging = true; lbTrack.style.cursor = 'grabbing';
-    lbStartX = e.pageX - lbTrack.offsetLeft; lbScrollLeft = lbTrack.scrollLeft;
-  });
-  document.addEventListener('mouseup', function() { lbDragging = false; lbTrack.style.cursor = ''; });
-  lbTrack.addEventListener('mousemove', function(e) {
-    if (!lbDragging) return; e.preventDefault();
-    var x = e.pageX - lbTrack.offsetLeft;
-    lbTrack.scrollLeft = lbScrollLeft - (x - lbStartX) * 1.2;
-  });
-
-  document.getElementById('editions-card').addEventListener('click', function() {
-    buildLightbox();
+    data.imgs.forEach(function(item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'lb-img-item';
+      var img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.label;
+      var lbl = document.createElement('span');
+      lbl.className = 'lb-img-label';
+      lbl.textContent = item.label;
+      wrap.appendChild(img);
+      wrap.appendChild(lbl);
+      lbTrack.appendChild(wrap);
+    });
     lbOverlay.classList.add('open');
     lenis.stop();
-  });
-  document.getElementById('lb-close').addEventListener('click', function() {
-    lbOverlay.classList.remove('open'); lenis.start();
-  });
-  lbOverlay.addEventListener('click', function(e) {
-    if (e.target === lbOverlay) { lbOverlay.classList.remove('open'); lenis.start(); }
-  });
+  }
+
+  function closeLightbox() {
+    lbOverlay.classList.remove('open');
+    lenis.start();
+  }
+
+  // Wire up open buttons
+  document.getElementById('editions-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('editions'); });
+  document.getElementById('editions-card').addEventListener('click', function() { openLightbox('editions'); });
+  document.getElementById('event-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('event'); });
+  document.getElementById('event-card').addEventListener('click', function() { openLightbox('event'); });
+  document.getElementById('promo-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('promo'); });
+  document.getElementById('promo-card').addEventListener('click', function() { openLightbox('promo'); });
+
+  // Close
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
   document.addEventListener('keydown', function(e) {
-    if (!lbOverlay.classList.contains('open')) return;
-    if (e.key === 'Escape') { lbOverlay.classList.remove('open'); lenis.start(); }
+    if (e.key === 'Escape' && lbOverlay.classList.contains('open')) closeLightbox();
+  });
+
+  // Drag scroll on lightbox track
+  var lbDragging = false, lbStartX, lbSL;
+  lbTrack.addEventListener('mousedown', function(e) {
+    lbDragging = true; lbStartX = e.pageX - lbTrack.offsetLeft; lbSL = lbTrack.scrollLeft;
+  });
+  document.addEventListener('mouseup', function() { lbDragging = false; });
+  lbTrack.addEventListener('mousemove', function(e) {
+    if (!lbDragging) return; e.preventDefault();
+    lbTrack.scrollLeft = lbSL - (e.pageX - lbTrack.offsetLeft - lbStartX) * 1.2;
   });
   </script>
 </body>
