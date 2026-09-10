@@ -458,11 +458,7 @@
       display: flex;
       flex-direction: column;
     }
-    .ui-hcard-img-wrap {
-      height: 280px;
-      overflow: hidden;
-      position: relative;
-    }
+
     .ui-hcard img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -723,6 +719,61 @@
     }
     .nhn-hero-link:hover .case-study-hero::after { opacity: 1; }
 
+
+    /* ── UI MOCKUP THUMBNAILS ── */
+    .ui-mockup-wrap {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      background: #161210;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 800px;
+    }
+    .ui-mockup-screen {
+      position: absolute;
+      width: 58%;
+      height: 82%;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transition: transform 0.6s cubic-bezier(.23,1,.32,1);
+      top: 50%; transform-origin: center center;
+    }
+    .ui-mockup-back {
+      transform: translateY(-50%) translateX(-28%) rotate3d(0,1,0,12deg) translateZ(-40px) scale(0.88);
+      opacity: 0.6;
+      z-index: 1;
+    }
+    .ui-mockup-mid {
+      transform: translateY(-50%) translateX(0%) rotate3d(0,1,0,6deg) translateZ(0px) scale(0.94);
+      opacity: 0.8;
+      z-index: 2;
+    }
+    .ui-mockup-front {
+      transform: translateY(-50%) translateX(22%) rotate3d(0,1,0,2deg) translateZ(30px) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+    /* 2-screen variant (event) */
+    .ui-mockup-wrap:not(:has(.ui-mockup-mid)) .ui-mockup-back {
+      transform: translateY(-50%) translateX(-18%) rotate3d(0,1,0,10deg) translateZ(-20px) scale(0.9);
+    }
+    .ui-mockup-wrap:not(:has(.ui-mockup-mid)) .ui-mockup-front {
+      transform: translateY(-50%) translateX(18%) rotate3d(0,1,0,-4deg) translateZ(20px) scale(1);
+    }
+    .ui-hcard:hover .ui-mockup-back  { transform: translateY(-50%) translateX(-32%) rotate3d(0,1,0,16deg) translateZ(-60px) scale(0.85); }
+    .ui-hcard:hover .ui-mockup-mid   { transform: translateY(-50%) translateX(-2%)  rotate3d(0,1,0,6deg)  translateZ(0px)  scale(0.95); }
+    .ui-hcard:hover .ui-mockup-front { transform: translateY(-50%) translateX(26%)  rotate3d(0,1,0,-2deg) translateZ(50px) scale(1.04); }
+    .ui-view-hint {
+      position: absolute; top: 14px; right: 14px; z-index: 10;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: white; background: rgba(181,64,42,0.85);
+      backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 2px;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .ui-hcard:hover .ui-view-hint { opacity: 1; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ─────────────────────────────────────
@@ -965,43 +1016,48 @@
 
           <!-- LONDON EDITIONS -->
           <div class="editions-card ui-hcard" id="editions-card">
-            <div class="ui-hcard-img-wrap">
-              <img id="et-0" alt="London Editions Overview" style="object-position: top;" />
+            <div class="ui-mockup-wrap">
+              <div class="ui-mockup-screen ui-mockup-back"  style="background:#e8e4df;"><img id="et-0" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+              <div class="ui-mockup-screen ui-mockup-mid"   style="background:#ede9e3;"><img src="editions-westminster.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+              <div class="ui-mockup-screen ui-mockup-front" style="background:#f2ede7;"><img src="editions-belgravia.png"   alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
               <span class="ui-view-hint">View all</span>
             </div>
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">UI Design · Asset Integration</span>
               <div class="ui-hcard-name">London Editions</div>
               <div class="ui-hcard-text">Working with a copywriter and UX designer, I brought the creative direction to life through considered asset integration and UI execution — a light, airy site with a modern luxury feel.</div>
-              <button class="ui-view-all" id="editions-open-btn">View all 5 screens</button>
+              <button class="ui-view-all" id="editions-open-btn">View all</button>
             </div>
           </div>
 
           <!-- RANGE ROVER EVENT -->
           <div class="ui-hcard" id="event-card">
-            <div class="ui-hcard-img-wrap">
-              <img src="RANGE ROVER - LTO Banner-1.png" alt="Range Rover Event" loading="lazy" style="object-fit: contain; background: #1a1210;" />
+            <div class="ui-mockup-wrap">
+              <div class="ui-mockup-screen ui-mockup-back"  style="background:#1a1210;"><img src="RANGE ROVER - LTO Banner.png"   alt="" style="width:100%;object-fit:contain;display:block;" /></div>
+              <div class="ui-mockup-screen ui-mockup-front" style="background:#120e0c;"><img src="RANGE ROVER - LTO Banner-1.png" alt="" style="width:100%;object-fit:contain;display:block;" /></div>
               <span class="ui-view-hint">View all</span>
             </div>
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">UI Design · Campaign</span>
               <div class="ui-hcard-name">Range Rover Event</div>
               <div class="ui-hcard-text">Each page rooted in a different part of London. The challenge: distinct character per section while maintaining the cohesion and refinement the brand demands.</div>
-              <button class="ui-view-all" id="event-open-btn">View all 2 banners</button>
+              <button class="ui-view-all" id="event-open-btn">View all</button>
             </div>
           </div>
 
           <!-- PROMOTIONAL CONTENT -->
           <div class="ui-hcard" id="promo-card">
-            <div class="ui-hcard-img-wrap">
-              <img src="CFS 1.png" alt="Promotional Content" loading="lazy" style="object-position: top;" />
+            <div class="ui-mockup-wrap">
+              <div class="ui-mockup-screen ui-mockup-back"  style="background:#f5f5f5;"><img src="Goodwood FoS.png"           alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+              <div class="ui-mockup-screen ui-mockup-mid"   style="background:#efefef;"><img src="Range Rover SV Ultra 1.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+              <div class="ui-mockup-screen ui-mockup-front" style="background:#f8f8f8;"><img src="CFS 1.png"                  alt="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
               <span class="ui-view-hint">View all</span>
             </div>
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">Production · Brand</span>
               <div class="ui-hcard-name">Promotional Content</div>
               <div class="ui-hcard-text">Fast-turnaround pieces for Goodwood FoS and the Chelsea Flower Show — sharp eye for brand alignment, moving quickly without compromising quality.</div>
-              <button class="ui-view-all" id="promo-open-btn">View all 3 pieces</button>
+              <button class="ui-view-all" id="promo-open-btn">View all</button>
             </div>
           </div>
 
@@ -1465,11 +1521,7 @@
       display: flex;
       flex-direction: column;
     }
-    .ui-hcard-img-wrap {
-      height: 280px;
-      overflow: hidden;
-      position: relative;
-    }
+
     .ui-hcard img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -1730,6 +1782,61 @@
     }
     .nhn-hero-link:hover .case-study-hero::after { opacity: 1; }
 
+
+    /* ── UI MOCKUP THUMBNAILS ── */
+    .ui-mockup-wrap {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      background: #161210;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 800px;
+    }
+    .ui-mockup-screen {
+      position: absolute;
+      width: 58%;
+      height: 82%;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transition: transform 0.6s cubic-bezier(.23,1,.32,1);
+      top: 50%; transform-origin: center center;
+    }
+    .ui-mockup-back {
+      transform: translateY(-50%) translateX(-28%) rotate3d(0,1,0,12deg) translateZ(-40px) scale(0.88);
+      opacity: 0.6;
+      z-index: 1;
+    }
+    .ui-mockup-mid {
+      transform: translateY(-50%) translateX(0%) rotate3d(0,1,0,6deg) translateZ(0px) scale(0.94);
+      opacity: 0.8;
+      z-index: 2;
+    }
+    .ui-mockup-front {
+      transform: translateY(-50%) translateX(22%) rotate3d(0,1,0,2deg) translateZ(30px) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+    /* 2-screen variant (event) */
+    .ui-mockup-wrap:not(:has(.ui-mockup-mid)) .ui-mockup-back {
+      transform: translateY(-50%) translateX(-18%) rotate3d(0,1,0,10deg) translateZ(-20px) scale(0.9);
+    }
+    .ui-mockup-wrap:not(:has(.ui-mockup-mid)) .ui-mockup-front {
+      transform: translateY(-50%) translateX(18%) rotate3d(0,1,0,-4deg) translateZ(20px) scale(1);
+    }
+    .ui-hcard:hover .ui-mockup-back  { transform: translateY(-50%) translateX(-32%) rotate3d(0,1,0,16deg) translateZ(-60px) scale(0.85); }
+    .ui-hcard:hover .ui-mockup-mid   { transform: translateY(-50%) translateX(-2%)  rotate3d(0,1,0,6deg)  translateZ(0px)  scale(0.95); }
+    .ui-hcard:hover .ui-mockup-front { transform: translateY(-50%) translateX(26%)  rotate3d(0,1,0,-2deg) translateZ(50px) scale(1.04); }
+    .ui-view-hint {
+      position: absolute; top: 14px; right: 14px; z-index: 10;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: white; background: rgba(181,64,42,0.85);
+      backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 2px;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .ui-hcard:hover .ui-view-hint { opacity: 1; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ─────────────────────────────────────
