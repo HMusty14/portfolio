@@ -302,10 +302,8 @@
       .ui-section-header { grid-template-columns: 1fr; margin: 0 24px 32px; }
       .ui-track-wrapper { padding: 0 24px 48px; }
       .ui-track { grid-template-columns: 1fr; }
-      .lb-img-item { width: calc(85vw); }
-      #lb-scroll-track { padding: 24px 20px 32px; gap: 16px; }
       #lb-topbar { padding: 0 20px; }
-      #lb-esc-hint { display: none; }
+      #lb-topbar-title { font-size: 13px; }
       .stats-band { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
       .contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
       footer { flex-direction: column; gap: 10px; padding: 28px 24px; }
@@ -558,11 +556,12 @@
     <div id="lb-topbar">
       <span id="lb-topbar-title"></span>
       <div id="lb-topbar-right">
-        <span id="lb-esc-hint">Scroll each image · Esc to close</span>
+        <span id="lb-esc-hint">Esc to close</span>
         <button id="lb-close">✕</button>
       </div>
     </div>
     <div id="lb-scroll-track"></div>
+    <div id="lb-dots"></div>
   </div>
 
   <!-- STATS BAND -->
@@ -701,18 +700,42 @@
   var lbOverlay = document.getElementById('lb-overlay');
   var lbTrack   = document.getElementById('lb-scroll-track');
   var lbTitle   = document.getElementById('lb-topbar-title');
+  var lbDotsEl  = document.getElementById('lb-dots');
+
+  function updateDots() {
+    var items = lbTrack.querySelectorAll('.lb-img-item');
+    var idx   = Math.round(lbTrack.scrollLeft / window.innerWidth);
+    lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === idx);
+    });
+  }
 
   function openLightbox(key) {
     var data = lbData[key];
     lbTitle.textContent = data.title;
-    lbTrack.innerHTML = '';
-    data.imgs.forEach(function(item) {
-      var wrap = document.createElement('div'); wrap.className = 'lb-img-item';
-      var img  = document.createElement('img'); img.src = item.src; img.alt = item.label;
-      var lbl  = document.createElement('span'); lbl.className = 'lb-img-label'; lbl.textContent = item.label;
-      var hint = document.createElement('span'); hint.className = 'lb-img-scroll-hint'; hint.textContent = '↕ Scroll to explore';
-      wrap.appendChild(img); wrap.appendChild(lbl); wrap.appendChild(hint); lbTrack.appendChild(wrap);
+    lbTrack.innerHTML   = '';
+    lbDotsEl.innerHTML  = '';
+
+    data.imgs.forEach(function(item, i) {
+      var wrap = document.createElement('div');
+      wrap.className = 'lb-img-item';
+      var img  = document.createElement('img');
+      img.src  = item.src; img.alt = item.label;
+      var lbl  = document.createElement('span');
+      lbl.className = 'lb-img-label'; lbl.textContent = item.label;
+      wrap.appendChild(img); wrap.appendChild(lbl);
+      lbTrack.appendChild(wrap);
+
+      var dot = document.createElement('div');
+      dot.className = 'lb-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', function() {
+        lbTrack.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' });
+      });
+      lbDotsEl.appendChild(dot);
     });
+
+    lbTrack.scrollLeft = 0;
+    lbTrack.addEventListener('scroll', updateDots);
     lbOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     try { lenis.stop(); } catch(e) {}
@@ -733,75 +756,6 @@
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
   lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lbOverlay.classList.contains('open')) closeLightbox(); });
-
-  // ── LIGHTBOX SCROLL HANDLING ──────────────────────────
-  var lbDrag = false, lbSX, lbSL;
-
-  function getActiveItem() {
-    // Return whichever lb-img-item is most visible in the track
-    var items = lbTrack.querySelectorAll('.lb-img-item');
-    var trackRect = lbTrack.getBoundingClientRect();
-    var best = null, bestOverlap = -1;
-    items.forEach(function(item) {
-      var r = item.getBoundingClientRect();
-      var overlap = Math.min(r.right, trackRect.right) - Math.max(r.left, trackRect.left);
-      if (overlap > bestOverlap) { bestOverlap = overlap; best = item; }
-    });
-    return best;
-  }
-
-  // Mouse: drag horizontally on track to switch images
-  lbTrack.addEventListener('mousedown', function(e) {
-    lbDrag = true; lbSX = e.pageX; lbSL = lbTrack.scrollLeft;
-    lbTrack.style.cursor = 'grabbing';
-  });
-  document.addEventListener('mouseup', function() { lbDrag = false; lbTrack.style.cursor = ''; });
-  lbTrack.addEventListener('mousemove', function(e) {
-    if (!lbDrag) return;
-    var dx = e.pageX - lbSX;
-    lbTrack.scrollLeft = lbSL - dx;
-  });
-
-  // Mouse wheel: vertical on overlay scrolls the active image, horizontal switches images
-  lbOverlay.addEventListener('wheel', function(e) {
-    if (!lbOverlay.classList.contains('open')) return;
-    var item = getActiveItem();
-    if (Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
-      // Vertical scroll → scroll inside active image
-      if (item) { e.preventDefault(); item.scrollTop += e.deltaY; }
-    } else {
-      // Horizontal scroll → switch between images
-      e.preventDefault();
-      lbTrack.scrollLeft += e.deltaX;
-    }
-  }, { passive: false });
-
-  // Touch: anywhere on the overlay — detect direction and route accordingly
-  var lbTouchStartX = 0, lbTouchStartY = 0, lbTouchSL = 0, lbTouchItemST = 0, lbTouchDir = null;
-
-  lbOverlay.addEventListener('touchstart', function(e) {
-    lbTouchStartX = e.touches[0].clientX;
-    lbTouchStartY = e.touches[0].clientY;
-    lbTouchSL  = lbTrack.scrollLeft;
-    var item = getActiveItem();
-    lbTouchItemST = item ? item.scrollTop : 0;
-    lbTouchDir = null;
-  }, { passive: true });
-
-  lbOverlay.addEventListener('touchmove', function(e) {
-    var dx = e.touches[0].clientX - lbTouchStartX;
-    var dy = e.touches[0].clientY - lbTouchStartY;
-    if (!lbTouchDir) lbTouchDir = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
-
-    if (lbTouchDir === 'h') {
-      e.preventDefault();
-      lbTrack.scrollLeft = lbTouchSL - dx;
-    } else {
-      e.preventDefault();
-      var item = getActiveItem();
-      if (item) item.scrollTop = lbTouchItemST - dy;
-    }
-  }, { passive: false });
   </script>
 </body>
 </html>
