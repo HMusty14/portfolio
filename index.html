@@ -125,6 +125,20 @@
     .nhn-live-link:hover { background: #A07820; gap: 16px; }
     .nhn-live-link::after { content: '↗'; font-size: 14px; }
     .cs-sidebar { padding: 56px 52px; background: rgba(240,235,227,.02); }
+    .cs-outcome { margin-top: 40px; padding: 28px 28px 30px; border: 1px solid rgba(240,235,227,.1); border-radius: 3px; background: rgba(240,235,227,.025); }
+    .cs-outcome-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .cs-outcome-head .sidebar-label { margin: 0; }
+    .cs-status { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; }
+    .cs-status-teal { background: rgba(26,138,138,.18); color: #4FC3C3; border: 1px solid rgba(26,138,138,.5); }
+    .cs-status-nhn  { background: rgba(139,105,20,.18); color: #D4A93A; border: 1px solid rgba(139,105,20,.6); }
+    .cs-outcome p { font-size: 14px; line-height: 1.75; color: var(--walnut); }
+    .cs-outcome p + p { margin-top: 12px; }
+    .cs-outcome p strong { color: var(--ink); font-weight: 500; }
+    .rec-item.done .rec-number { color: #4FC3C3; }
+    .rec-item.exp .rec-number { color: var(--sand); }
+    .rec-flag { display: inline-block; margin-left: 8px; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; vertical-align: middle; padding: 2px 7px; border-radius: 2px; border: 1px solid rgba(240,235,227,.2); color: rgba(240,235,227,.6); }
+    .rec-flag-built { border-color: rgba(26,138,138,.5); color: #4FC3C3; }
+    .rec-flag-exp { border-color: rgba(200,169,122,.5); color: var(--sand); }
     .sidebar-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--sienna); margin-bottom: 20px; }
     .brief-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; color: var(--ink); padding-left: 20px; margin-bottom: 36px; }
     .brief-quote-teal { border-left: 3px solid var(--teal); }
@@ -215,10 +229,11 @@
       height: 100vh;
       height: 100dvh;
       z-index: 2000;
-      background: rgba(14,11,9,.97);
+      background: #0E0B09;
       flex-direction: column;
     }
     #lb-overlay.open { display: flex; }
+    body.lb-open nav { visibility: hidden; }
     #lb-topbar {
       height: 64px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: space-between;
@@ -245,6 +260,44 @@
       overscroll-behavior-y: contain;
       padding: 32px 15vw 80px;
       box-sizing: border-box;
+    }
+    /* structured process panels */
+    .lb-proc { max-width: 1100px; margin: 0 auto; color: #F0EBE3; font-family: 'DM Sans', sans-serif; }
+    .lb-proc-step { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #B5402A; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+    .lb-tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border: 1px solid rgba(240,235,227,.2); color: rgba(240,235,227,.7); }
+    .lb-tag-built { border-color: rgba(26,138,138,.7); color: #4FC3C3; }
+    .lb-tag-exp { border-color: rgba(200,169,122,.6); color: #C8A97A; }
+    .lb-proc h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(26px,3vw,40px); line-height: 1.08; letter-spacing: -.01em; margin-bottom: 14px; }
+    .lb-proc h3 em { font-style: italic; color: #B5402A; }
+    .lb-proc-lede { font-size: 15px; line-height: 1.75; color: #C4B8AA; max-width: 720px; margin-bottom: 36px; }
+    .lb-proc-block { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; padding: 36px 0; border-top: 1px solid rgba(240,235,227,.08); }
+    .lb-proc-block.rev .lb-proc-fig { order: -1; }
+    .lb-proc-cols { display: grid; gap: 22px; }
+    .lb-proc-col h4 { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(240,235,227,.45); margin-bottom: 8px; }
+    .lb-proc-col p { font-size: 14px; line-height: 1.7; color: #C4B8AA; }
+    .lb-proc-col p + p { margin-top: 8px; }
+    .lb-proc-col strong { color: #F0EBE3; font-weight: 500; }
+    .lb-stat { display: flex; gap: 32px; flex-wrap: wrap; margin: 4px 0 6px; }
+    .lb-stat div { display: flex; flex-direction: column; gap: 2px; }
+    .lb-stat b { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 30px; line-height: 1; color: #F0EBE3; }
+    .lb-stat span { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,235,227,.45); }
+    .lb-proc-fig { display: flex; flex-direction: column; gap: 12px; }
+    .lb-proc-fig figure { margin: 0; }
+    .lb-proc-fig figure > div { background: #F4F1EC; border-radius: 4px; overflow: hidden; display: flex; justify-content: center; }
+    .lb-proc-fig img { max-width: 100%; height: auto; max-height: 560px; object-fit: contain; display: block; }
+    .lb-proc-fig figure.tall img { max-height: 420px; }
+    .lb-proc-fig figcaption { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,235,227,.4); padding: 8px 2px 0; }
+    .lb-proc-fig figure.missing { min-height: 160px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px dashed rgba(240,235,227,.25); color: rgba(240,235,227,.4); font-size: 12px; text-align: center; padding: 20px; }
+    .lb-proc-fig figure.missing > div { display: none; }
+    .lb-proc-fig figure.missing figcaption { display: none; }
+    .lb-proc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .lb-proc-table td { padding: 7px 0; border-bottom: 1px solid rgba(240,235,227,.08); color: #C4B8AA; }
+    .lb-proc-table td:last-child { text-align: right; color: #F0EBE3; font-variant-numeric: tabular-nums; }
+    .lb-proc-table tr.hi td { color: #4FC3C3; }
+    .lb-proc-next { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(240,235,227,.08); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(240,235,227,.35); }
+    @media (max-width: 960px) {
+      .lb-proc-block { grid-template-columns: 1fr; gap: 24px; padding: 28px 0; }
+      .lb-proc-block.rev .lb-proc-fig { order: 0; }
     }
     .lb-panel-label { display: block; margin-top: 18px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(240,235,227,.4); font-family: 'DM Sans', sans-serif; }
     #lb-dots {
@@ -273,6 +326,13 @@
 
     /* ── STATS BAND ── */
     .stats-band { margin-top: 80px; background: #131009; padding: 80px 48px; display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; }
+    .how-band { margin-top: 80px; background: #131009; padding: 80px 48px; }
+    .how-head { margin-bottom: 48px; }
+    .how-title { font-family: 'Playfair Display', serif; font-size: clamp(32px,4vw,56px); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+    .how-title em { font-style: italic; color: var(--sienna); }
+    .how-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; }
+    .how-item-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+    .how-item-text { font-size: 13px; line-height: 1.75; color: var(--walnut); margin-top: 12px; opacity: .85; }
     .band-stat { border-left: 2px solid var(--sienna); padding-left: 24px; }
     .band-stat-number { font-family: 'Playfair Display', serif; font-size: clamp(36px,4vw,60px); font-weight: 900; color: var(--ink); line-height: 1; }
     .band-stat-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--sand); margin-top: 10px; opacity: .7; line-height: 1.5; }
@@ -320,9 +380,18 @@
       .ui-section-header { grid-template-columns: 1fr; margin: 0 24px 32px; }
       .ui-track-wrapper { padding: 0 24px 48px; }
       .ui-track { grid-template-columns: 1fr; }
-      #lb-topbar { padding: 0 20px; }
-      #lb-topbar-title { font-size: 13px; }
-      .stats-band { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
+      .hero-scroll-hint { display: none; }
+      .nhn-split { overflow: hidden; }
+      #lb-topbar { padding: 0 16px; }
+      #lb-topbar-title { font-size: 13px; padding-right: 12px; }
+      #lb-esc-hint { display: none; }
+      #lb-track { padding: 20px 16px 110px; }
+      #lb-prev, #lb-next { top: auto; bottom: 20px; transform: none; width: 44px; height: 44px; background: rgba(30,26,23,.85); }
+      #lb-prev { left: 16px; }
+      #lb-next { right: 16px; }
+      #lb-dots { bottom: 34px; padding: 8px 12px; border-radius: 20px; background: rgba(30,26,23,.85); }
+      .how-band { padding: 60px 24px; }
+      .how-grid { grid-template-columns: 1fr; gap: 28px; }
       .contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
       footer { flex-direction: column; gap: 10px; padding: 28px 24px; }
     }
@@ -378,7 +447,7 @@
     <div class="work-intro reveal">
       <div class="work-intro-inner">
         <h2 class="work-intro-title">Selected<br>Work</h2>
-        <p class="work-intro-note">Two UX case studies and a body of UI work — enterprise UX strategy at Accenture, a full site build from scratch, and brand campaigns delivered for JLR across Range Rover and Land Rover.</p>
+        <p class="work-intro-note">Two UX case studies and a body of UI work — enterprise UX strategy at Accenture, a full site designed and built from scratch, and brand campaigns delivered for JLR across Range Rover and Land Rover.</p>
       </div>
     </div>
 
@@ -429,15 +498,20 @@
           <p class="sidebar-label">Recommendations</p>
           <div class="rec-item">
             <span class="rec-number rec-number-teal">1</span>
-            <div class="rec-text"><strong>Build a considered journey into approved used</strong>Rather than dropping CTAs into the new car flow, guide users through the value of approved used first — why it exists, what they get — then route them to the order site once they're informed and bought in.</div>
+            <div class="rec-text"><strong>Build a considered journey into approved used <span class="rec-flag rec-flag-built">Built</span></strong>Rather than dropping CTAs into the new car flow, guide users through the value of approved used first — why it exists, what they get — then route them to the order site once they're informed and bought in.</div>
           </div>
           <div class="rec-item">
             <span class="rec-number rec-number-teal">2</span>
-            <div class="rec-text"><strong>Combine new &amp; approved used on results pages</strong>Reduce the cognitive switch required — surface both options together so users can make an active, informed choice rather than having to navigate away.</div>
+            <div class="rec-text"><strong>Combine new &amp; approved used on results pages <span class="rec-flag rec-flag-built">Built</span></strong>Reduce the cognitive switch required — surface both options together so users can make an active, informed choice rather than having to navigate away.</div>
           </div>
           <div class="rec-item">
             <span class="rec-number rec-number-teal">3</span>
-            <div class="rec-text"><strong>Surface vehicle value on PDP earlier</strong>Lead with specs, features, and selling points higher in the page — give users a reason to commit before they reach the CTA.</div>
+            <div class="rec-text"><strong>Surface vehicle value on PDP earlier <span class="rec-flag rec-flag-exp">Experimental</span></strong>Lead with specs, features, and selling points higher in the page — give users a reason to commit before they reach the CTA.</div>
+          </div>
+          <div class="cs-outcome">
+            <div class="cs-outcome-head"><p class="sidebar-label">Outcome</p><span class="cs-status cs-status-teal">2 of 3 shipped</span></div>
+            <p><strong>Recommendations 1 and 2 were adopted and built</strong> into the Range Rover and Land Rover sites — the considered journey (signpost, extended Discovery component, ignite-bar entry) and the combined results page, starting with the contained, measurable phase. Recommendation 3 was positioned deliberately as an experiment to widen the client’s thinking beyond entry points, and remains open.</p>
+            <p><strong>What I took from it.</strong> Anchoring every change to a number the client already trusted made the recommendations easy to say yes to, and sequencing them from lowest risk upwards meant the structural idea never had to win on its own. Next time I’d pair the analytics with a small round of user interviews earlier — the data showed where users switched, not why.</p>
           </div>
         </div>
       </div>
@@ -452,31 +526,31 @@
           <span class="case-study-counter">02</span>
           <div class="case-study-hero-content">
             <span class="cs-badge cs-badge-nhn">UX · Full Site Build</span>
-            <span class="case-study-meta-hero">NHN Horizon<br>Commodity Trading Platform</span>
+            <span class="case-study-meta-hero">NHN Horizon<br>Commodity Trading · Live</span>
           </div>
         </div>
       </a>
       <div class="case-study-body">
         <div class="cs-main">
           <h3 class="cs-title cs-title-nhn">NHN Horizon</h3>
-          <p class="cs-client">Commodity Trading · UX Design</p>
-          <p class="cs-desc">A full website design for a commodity trading company operating across two distinct markets — agriculture and oil &amp; gas. The client had strict requirements for the design language to feel familiar to their industry: competitors in this space typically run static, linear sites with a formal, information-led tone. The core challenge was honouring that brief whilst delivering one unified platform that gave each audience a genuinely tailored experience without fragmenting the brand.</p>
+          <p class="cs-client">Commodity Trading · UX, UI &amp; Front-end Build</p>
+          <p class="cs-desc">A full website design and build for a commodity trading company operating across two distinct markets — agriculture, sourcing from Northern Nigeria and East Africa for wholesale buyers in the Middle East, and oil &amp; gas in the Nigerian market. Competitors in this space run static, linear sites with a formal, information-led tone, and the site needed to sit credibly in that landscape while giving each audience a tailored experience without fragmenting the brand. I took it from positioning and competitor research through to a Figma design system and a React build. NHN Horizon is a venture of my own, which meant the commercial trade-offs were mine to make as well as the design ones.</p>
           <div class="tag-row">
             <span class="tag-pill tag-nhn">UX Strategy</span>
-            <span class="tag-pill tag-nhn">Web Design</span>
-            <span class="tag-pill tag-nhn">Competitor Research</span>
-            <span class="tag-pill tag-nhn">Dual Audience</span>
             <span class="tag-pill tag-nhn">Brand Design</span>
+            <span class="tag-pill tag-nhn">Competitor Research</span>
+            <span class="tag-pill tag-nhn">Figma → React</span>
+            <span class="tag-pill tag-nhn">Dual Audience</span>
           </div>
           <a class="nhn-live-link" href="https://nhnhorizon.com" target="_blank" rel="noopener">View live site</a>
         </div>
         <div class="cs-sidebar">
-          <p class="sidebar-label">The Brief</p>
-          <blockquote class="brief-quote brief-quote-nhn">"Build a single platform for a commodity trading company that provides two distinct experiences — one for agriculture, one for oil and gas — whilst feeling native to the industry."</blockquote>
+          <p class="sidebar-label">The Problem</p>
+          <p class="problem-text">Wholesale buyers in commodity trading decide whether a supplier is credible within seconds of landing on their site — and they expect the conventions of the sector. NHN Horizon serves two very different audiences, agriculture and oil &amp; gas, from one small company. The site had to establish trust with both without looking like two businesses, and it had to work as the front door for outbound outreach, where a prospect arrives from an email with no prior context.</p>
           <p class="sidebar-label">The Challenge</p>
           <div class="rec-item">
             <span class="rec-number rec-number-nhn">—</span>
-            <div class="rec-text"><strong>Design language constrained by convention</strong>Competitors in commodity trading run static, linear sites with a formal, information-led tone. The client needed to sit comfortably in that landscape — familiar enough to build trust, considered enough to stand out.</div>
+            <div class="rec-text"><strong>Design language constrained by convention</strong>Competitors in commodity trading run static, linear sites with a formal, information-led tone. NHN Horizon needed to sit comfortably in that landscape — familiar enough to build trust, considered enough to stand out.</div>
           </div>
           <div class="rec-item">
             <span class="rec-number rec-number-nhn">—</span>
@@ -485,6 +559,15 @@
           <div class="rec-item">
             <span class="rec-number rec-number-nhn">—</span>
             <div class="rec-text"><strong>Competitor research across both sectors</strong>Benchmarked trading platforms in agriculture and energy to understand conventions, identify gaps, and inform the visual and structural decisions.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number rec-number-nhn">—</span>
+            <div class="rec-text"><strong>Designing for the outreach journey, not just the browse</strong>Most first visits come from outbound emails to prospective buyers, so each sector’s landing view had to answer “who are you, what do you trade, and why should I reply?” above the fold — before any navigation.</div>
+          </div>
+          <div class="cs-outcome">
+            <div class="cs-outcome-head"><p class="sidebar-label">Outcome</p><span class="cs-status cs-status-nhn">Live &amp; in use</span></div>
+            <p><strong>Shipped end to end</strong> — designed in Figma, built in React, and live as the front door for the company’s outreach to wholesale buyers, with each sector given its own entry point and visual register within one brand.</p>
+            <p><strong>What I took from it.</strong> Designing for two audiences forced a discipline I now apply everywhere: decide what is shared and what is sector-specific before drawing anything, or the two experiences drift apart. Building it myself also changed how I hand over to developers — I now know which design decisions are cheap and which quietly cost a week.</p>
           </div>
         </div>
       </div>
@@ -529,7 +612,7 @@
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">UI Design · Asset Integration</span>
               <div class="ui-hcard-name">London Editions</div>
-              <div class="ui-hcard-text">A series of London-inspired edition pages, each rooted in a different borough. The decision on every layout, image crop, and type treatment came back to one question — does this feel like it belongs in the Range Rover world?</div>
+              <div class="ui-hcard-text">Four edition pages, each rooted in a London borough — Westminster, Belgravia, Battersea, Hoxton — on a one-week turnaround. I worked directly with a copywriter so that image, crop and type carried the same feeling as the words: each page had to feel like the place it was named after, not just say it. Every decision came back to one question — does this belong in the Range Rover world?</div>
               <button class="ui-view-all" id="editions-open-btn">View all</button>
             </div>
           </div>
@@ -544,7 +627,7 @@
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">UI Design · Campaign</span>
               <div class="ui-hcard-name">Range Rover Event</div>
-              <div class="ui-hcard-text">A campaign landing page and countdown experience built to tight deadlines. The constraint was delivering something that felt considered and premium under real time pressure — no room for guesswork.</div>
+              <div class="ui-hcard-text">A campaign landing page and countdown experience. The brief came with a fixed set of assets from the social team, so the premium feel had to be built through hierarchy, pacing and restraint rather than new imagery. The harder problem was that entry points were scattered across the DX sites — the landing page had to make sense wherever a user arrived from.</div>
               <button class="ui-view-all" id="event-open-btn">View all</button>
             </div>
           </div>
@@ -560,7 +643,7 @@
             <div class="ui-hcard-body">
               <span class="ui-hcard-badge">Production · Brand</span>
               <div class="ui-hcard-name">Promotional Content</div>
-              <div class="ui-hcard-text">Promotional pieces for Goodwood Festival of Speed and the Chelsea Flower Show. Speed was the constraint — but the output still had to sit comfortably alongside everything else Range Rover puts into the world.</div>
+              <div class="ui-hcard-text">Promotional pieces for Goodwood Festival of Speed, the Chelsea Flower Show and the Range Rover SV Ultra, each turned around in a matter of days. The job was to make an external event feel like a Range Rover moment — foregrounding the event without diluting the brand — and to do it fast enough that it landed while the event was still live.</div>
               <button class="ui-view-all" id="promo-open-btn">View all</button>
             </div>
           </div>
@@ -585,12 +668,168 @@
     <div id="lb-dots"></div>
   </div>
 
-  <!-- STATS BAND -->
-  <div class="stats-band">
-    <div class="band-stat reveal"><div class="band-stat-number">2</div><div class="band-stat-label">UX case studies across two industries</div></div>
-    <div class="band-stat reveal reveal-d1"><div class="band-stat-number">3</div><div class="band-stat-label">JLR UI campaigns delivered</div></div>
-    <div class="band-stat reveal reveal-d2"><div class="band-stat-number">1</div><div class="band-stat-label">Full platform built from scratch</div></div>
-    <div class="band-stat reveal reveal-d3"><div class="band-stat-number">5</div><div class="band-stat-label">Digital products shipped end to end</div></div>
+  <!-- APPROVED USED — PROCESS PANELS
+       Image slots: au-landscape.jpg, au-flow.jpg, au-competitors.jpg, au-signpost.jpg, au-heatmap.jpg,
+       au-ignite.jpg, au-lto-page.jpg, au-nameplate.jpg, au-unified.jpg, au-plp-pdp.jpg. Replace with 2x Figma exports
+       under the same filenames; a missing file shows a labelled placeholder instead of breaking. -->
+  <template id="au-p1">
+    <div class="lb-proc">
+      <div class="lb-proc-step">01 · Discovery</div>
+      <h3>Where users were actually <em>entering</em> approved used</h3>
+      <p class="lb-proc-lede">Before proposing anything, I audited every digital entry point into approved used across the Range Rover and Land Rover sites, pulled the session data behind each one, and benchmarked how competitors handle the new-versus-used split.</p>
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Audit</h4><p>Mapped the current landscape: nameplate pages, the Discovery page, results pages (PLP), product pages (PDP), the ignite bar and the dedicated approved used journey — and how each connects, or fails to connect, to the next.</p></div>
+          <div class="lb-proc-col"><h4>Data</h4>
+            <div class="lb-stat"><div><b>30%</b><span>of new PLP visitors went on to approved used</span></div><div><b>75k</b><span>sessions reached approved used via new-car entry points</span></div></div>
+            <p>Users were already crossing over in large numbers — but almost entirely via new-car pages rather than the dedicated approved used entry points, and the link between the two journeys was thin.</p></div>
+          <div class="lb-proc-col"><h4>Competitors</h4><p>BMW and Porsche blend new and pre-owned far more obviously: shared discovery pages, side-by-side finders, and approved used surfaced at the moment of intent rather than as a separate world.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-flow.jpg" alt="Session flow from new PLP into approved used"></div><figcaption>Session flow — new PLP → approved used PLP → PDP</figcaption></figure>
+          <figure><div><img src="au-competitors.jpg" alt="BMW and Porsche blending new and pre-owned"></div><figcaption>Competitor benchmark — BMW, Porsche</figcaption></figure>
+          <figure><div><img src="au-landscape.jpg" alt="Audit of current entry points"></div><figcaption>Entry-point audit</figcaption></figure>
+        </div>
+      </div>
+      <div class="lb-proc-next">Next → Recommendation 1: a considered journey into approved used</div>
+    </div>
+  </template>
+
+  <template id="au-p2">
+    <div class="lb-proc">
+      <div class="lb-proc-step">02 · Recommendation 1 <span class="lb-tag lb-tag-built">Built</span></div>
+      <h3>A <em>considered journey</em> into approved used</h3>
+      <p class="lb-proc-lede">Rather than dropping approved used CTAs into the new-car flow, meet users at the moments where the data showed intent shifting, and give them a route that explains the value before sending them to the order site. Three low-risk changes, each justified by its own data.</p>
+
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Change · Signpost on the LTO page</h4><p>A signpost component with two CTAs: one lands users on the approved used vehicle page to explore the full benefits before continuing; the second serves users with clearer intent, taking them directly to the approved used section.</p></div>
+          <div class="lb-proc-col"><h4>Data</h4><p><strong>30% of users switch from new to approved used on the LTO page.</strong> The switch was already happening — there was simply no approved used presence around the sale components, where purchase intent is at its highest.</p></div>
+          <div class="lb-proc-col"><h4>Rationale</h4><p>Embedding the signpost creates a new entry point at the most relevant moment in the journey, and mirrors behaviour seen in the event journey, where a more considered path showed a higher likelihood to convert.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-signpost.jpg" alt="Signpost component with two approved used CTAs"></div><figcaption>Signpost component — two CTAs</figcaption></figure>
+          <figure class="tall"><div><img src="au-lto-page.jpg" alt="LTO page showing where the signpost sits in the journey"></div><figcaption>Placement in the LTO page</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="lb-proc-block rev">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Change · Extend the Discovery component</h4><p>A component already live on the Discovery page maintains a non-intrusive presence consistent with competitor approaches. Extend it to lower-traffic pages, replacing the little-used “find a retailer” tab with an approved used tab.</p></div>
+          <div class="lb-proc-col"><h4>Data</h4><p>The mobile scroll-depth heatmap shows no evidence that the component discourages users from continuing down the page — an approved used entry point here is well placed.</p></div>
+          <div class="lb-proc-col"><h4>Rationale</h4><p>Reuses something already built and proven, so it improves entry points into the approved used LTO journey at very low risk and cost.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure class="tall"><div><img src="au-heatmap.jpg" alt="Mobile scroll-depth heatmap"></div><figcaption>Mobile scroll-depth heatmap — Discovery page</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Change · Approved used in the ignite bar</h4><p>Add an approved used option to the ignite bar, alongside or in place of the lowest-utilised CTAs.</p></div>
+          <div class="lb-proc-col"><h4>Data · share of ignite-bar clicks</h4>
+            <table class="lb-proc-table">
+              <tr><td>Build and order</td><td>61.5%</td></tr>
+              <tr><td>In stock vehicles</td><td>24.3%</td></tr>
+              <tr><td>Calculate finance</td><td>2.3%</td></tr>
+              <tr><td>Insurance</td><td>2.2%</td></tr>
+              <tr><td>Book a test drive</td><td>1.2%</td></tr>
+              <tr class="hi"><td>Find a retailer</td><td>0.6%</td></tr>
+              <tr class="hi"><td>Contact us</td><td>0.6%</td></tr>
+              <tr class="hi"><td>Subscribe and drive</td><td>0.5%</td></tr>
+            </table></div>
+          <div class="lb-proc-col"><h4>Rationale</h4><p>The bar is already implemented and shows strong response to sales-oriented CTAs. Three options carry under 1% of clicks each, so an approved used entry can be surfaced without any significant new development.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-ignite.jpg" alt="Ignite bar before and after"></div><figcaption>Ignite bar — before / with approved used</figcaption></figure>
+        </div>
+      </div>
+      <div class="lb-proc-next">Next → Recommendation 2: combine new &amp; approved used on results pages</div>
+    </div>
+  </template>
+
+  <template id="au-p3">
+    <div class="lb-proc">
+      <div class="lb-proc-step">03 · Recommendation 2 <span class="lb-tag lb-tag-built">Built</span></div>
+      <h3>Combine new &amp; approved used <em>on results pages</em></h3>
+      <p class="lb-proc-lede">New and approved used vehicles lived as separate journeys, so users had to actively switch between them. Reduce that cognitive switch in two phases — a contained change first, so its impact can be measured, then a structural one only if the data supports it.</p>
+
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Phase 1 · Nameplate pages</h4><p>Nameplate pages defaulted to new stock in both CTAs and body copy. Either approach shifts the copy to a neutral tone, making approved used a natural consideration rather than a secondary one.</p>
+            <p><strong>Approach 1 — dual CTAs.</strong> Two distinct CTAs meet users at their existing intent, removing the need to switch.</p>
+            <p><strong>Approach 2 — unified CTA.</strong> A single CTA to the LTO page lets the full vehicle range surface the decision naturally.</p></div>
+          <div class="lb-proc-col"><h4>Data</h4><p>Grounded in the 30% of users already making the switch, and the 75k sessions arriving at approved used via new entry points — intent shifts within the journey, not before it.</p></div>
+          <div class="lb-proc-col"><h4>Decision</h4><p><strong>Approach 1 recommended</strong> — it isolates the change, making it easier to measure engagement and evaluate impact before anything larger.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-nameplate.jpg" alt="Nameplate page — dual CTA and unified CTA approaches"></div><figcaption>Nameplate page — approach 1 vs approach 2</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="lb-proc-block rev">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Phase 2 · Unified results page</h4><p>Restructure the LTO page into a single view, with filtering or visual differentiation between new and approved used, so approved used options are passively exposed to users who may never have actively considered them.</p></div>
+          <div class="lb-proc-col"><h4>Risk</h4><p>Cannibalising new-vehicle sales was raised. Customers with firm intent to buy new are likely to do so regardless — but given competitive new-vehicle pricing, this should be <strong>tested rather than assumed</strong>.</p></div>
+          <div class="lb-proc-col"><h4>Rationale</h4><p>Precedented by competitors, notably Porsche’s vehicle discovery. A promotional pod surfacing equivalent approved used vehicles contextually was proposed as a lower-commitment way to validate the hypothesis before committing to structural change.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-unified.jpg" alt="Unified results page with new and approved used filtering"></div><figcaption>Unified LTO page — current → proposed</figcaption></figure>
+        </div>
+      </div>
+      <div class="lb-proc-next">Next → Recommendation 3: surface vehicle value earlier</div>
+    </div>
+  </template>
+
+  <template id="au-p4">
+    <div class="lb-proc">
+      <div class="lb-proc-step">04 · Recommendation 3 <span class="lb-tag lb-tag-exp">Experimental</span></div>
+      <h3>Surface vehicle <em>value</em> earlier on PLP and PDP</h3>
+      <p class="lb-proc-lede">A proposal I initiated independently, building on related work for older model-year vehicles, and included to push the client’s thinking beyond entry points to what happens once users arrive.</p>
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Change</h4><p>Two levels. On the PLP, visually highlight higher-specification vehicles within the listing cards to give a stronger reason to click. On the PDP, lead with key specs, features and selling points higher on the page, so the decision is reinforced before users reach the CTA.</p></div>
+          <div class="lb-proc-col"><h4>Data</h4><p>Click-through between PLP and PDP was a key point of failure — users browsing approved used listings weren’t converting to product pages, pointing to a gap in perceived value at the listing level.</p></div>
+          <div class="lb-proc-col"><h4>Rationale</h4><p>Approved used vehicles often need more justification than new. Surfacing their features and value at both the listing and product level makes the case without relying on users to seek that information out themselves.</p></div>
+        </div>
+        <div class="lb-proc-fig">
+          <figure><div><img src="au-plp-pdp.jpg" alt="PLP and PDP with vehicle value surfaced earlier"></div><figcaption>PLP highlight cards → PDP with specs surfaced</figcaption></figure>
+        </div>
+      </div>
+      <div class="lb-proc-next">Next → Outcome</div>
+    </div>
+  </template>
+
+  <template id="au-p5">
+    <div class="lb-proc">
+      <div class="lb-proc-step">05 · Outcome</div>
+      <h3>What was <em>built</em>, and what I took from it</h3>
+      <p class="lb-proc-lede">Recommendations 1 and 2 were adopted and built into the Range Rover and Land Rover sites. Recommendation 3 was positioned as an experiment to widen the conversation, and remains open.</p>
+      <div class="lb-proc-block">
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>Shipped</h4><p>The considered journey (signpost, extended Discovery component, ignite-bar entry) and the combined results-page approach — starting with the contained, measurable phase.</p></div>
+          <div class="lb-proc-col"><h4>What I’d measure</h4><p>Approved used sessions originating from new-car pages, PLP → PDP click-through on approved used listings, and new-vehicle conversion held flat as the cannibalisation check.</p></div>
+        </div>
+        <div class="lb-proc-cols">
+          <div class="lb-proc-col"><h4>What worked</h4><p>Anchoring every change to a number the client already trusted made the recommendations easy to say yes to — and sequencing them from lowest risk upwards meant the structural idea didn’t have to win on its own.</p></div>
+          <div class="lb-proc-col"><h4>What I’d do differently</h4><p>Pair the analytics with a small round of user interviews earlier. The data showed where users switched; it didn’t say why, and that would have sharpened the copy on the new entry points.</p></div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- HOW I WORK -->
+  <div class="how-band">
+    <div class="how-head reveal">
+      <p class="section-label">How I work</p>
+      <h2 class="how-title">Reasons, not <em>opinions.</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="band-stat reveal"><div class="how-item-title">Start from the number</div><div class="how-item-text">Session data, heatmaps and click share before any layout. If I can’t point to what a change is meant to move, it isn’t ready to be proposed.</div></div>
+      <div class="band-stat reveal reveal-d1"><div class="how-item-title">Sequence by risk</div><div class="how-item-text">Ship the contained, measurable change first and let it earn the structural one. Clients say yes to a small step far more readily than to a big idea.</div></div>
+      <div class="band-stat reveal reveal-d2"><div class="how-item-title">Design inside the brand</div><div class="how-item-text">Strict guidelines are a constraint I like. The craft is making every asset feel native to the brand, with copywriters, social and brand teams in the room from the start.</div></div>
+      <div class="band-stat reveal reveal-d3"><div class="how-item-title">Build it, or build for it</div><div class="how-item-text">Having taken a site from Figma to React myself, I hand over in components and states rather than pictures, and I know which decisions are cheap and which cost a sprint.</div></div>
+    </div>
   </div>
 
   <!-- CONTACT -->
@@ -604,7 +843,6 @@
         <a class="contact-link" href="mailto:haleemmustapha5@gmail.com">haleemmustapha5@gmail.com</a>
         <a class="contact-link" href="https://www.linkedin.com/in/haleem-mustapha" target="_blank" rel="noopener">LinkedIn</a>
         <a class="contact-link" href="https://nhnhorizon.com" target="_blank" rel="noopener">NHN Horizon ↗</a>
-        <a class="contact-link" href="#">Download CV</a>
       </div>
     </div>
   </section>
@@ -702,9 +940,11 @@
     reccs: {
       title: 'Approved Used — Process & Recommendations',
       imgs: [
-        { src: 'rec-1.jpg', label: 'Recommendation 1 — Considered journey into Approved Used' },
-        { src: 'rec-2.jpg', label: 'Recommendation 2 — Combining new & approved used on results pages' },
-        { src: 'rec-3.jpg', label: 'Recommendation 3 — Surface vehicle value on PDP earlier' }
+        { tpl: 'au-p1', label: 'Discovery' },
+        { tpl: 'au-p2', label: 'Recommendation 1 — A considered journey into Approved Used' },
+        { tpl: 'au-p3', label: 'Recommendation 2 — Combining new & approved used on results pages' },
+        { tpl: 'au-p4', label: 'Recommendation 3 — Surface vehicle value earlier' },
+        { tpl: 'au-p5', label: 'Outcome' }
       ]
     },
     editions: {
@@ -752,13 +992,25 @@
   function renderPanel(idx) {
     var item = lbCurrentData.imgs[idx];
     lbTrack.innerHTML = '';
-    var img = document.createElement('img');
-    img.src = item.src; img.alt = item.label;
-    img.style.cssText = 'width:100%;height:auto;display:block;border-radius:4px;pointer-events:none;';
-    var lbl = document.createElement('span');
-    lbl.className = 'lb-panel-label'; lbl.textContent = item.label;
-    lbTrack.appendChild(img);
-    lbTrack.appendChild(lbl);
+    if (item.tpl) {
+      // structured panel from a <template>; missing image files become labelled placeholders
+      var tpl = document.getElementById(item.tpl);
+      lbTrack.appendChild(tpl.content.cloneNode(true));
+      lbTrack.querySelectorAll('.lb-proc-fig img').forEach(function(im) {
+        im.addEventListener('error', function() {
+          var fig = im.parentNode; fig.classList.add('missing');
+          fig.appendChild(document.createTextNode('Export from Figma at 2x and save as ' + im.getAttribute('src')));
+        });
+      });
+    } else {
+      var img = document.createElement('img');
+      img.src = item.src; img.alt = item.label;
+      img.style.cssText = 'width:100%;height:auto;display:block;border-radius:4px;pointer-events:none;';
+      var lbl = document.createElement('span');
+      lbl.className = 'lb-panel-label'; lbl.textContent = item.label;
+      lbTrack.appendChild(img);
+      lbTrack.appendChild(lbl);
+    }
     lbTrack.scrollTop = 0;
     lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
     lbPrevBtn.classList.toggle('hidden', idx === 0);
@@ -779,11 +1031,13 @@
     lbCurrentIdx = 0;
     renderPanel(0);
     lbOverlay.classList.add('open');
+    document.body.classList.add('lb-open');
     if (lenis) { try { lenis.stop(); } catch(e) {} }
   }
 
   function closeLightbox() {
     lbOverlay.classList.remove('open');
+    document.body.classList.remove('lb-open');
     if (lenis) { try { lenis.start(); } catch(e) {} }
   }
 
