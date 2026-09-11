@@ -246,6 +246,7 @@
       padding: 32px 15vw 80px;
       box-sizing: border-box;
     }
+    .lb-panel-label { display: block; margin-top: 18px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(240,235,227,.4); font-family: 'DM Sans', sans-serif; }
     #lb-dots {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 8px; z-index: 2010; align-items: center;
@@ -570,7 +571,7 @@
   </section>
 
   <!-- LIGHTBOX -->
-  <div id="lb-overlay">
+  <div id="lb-overlay" data-lenis-prevent>
     <div id="lb-topbar">
       <span id="lb-topbar-title"></span>
       <div id="lb-topbar-right">
@@ -783,14 +784,7 @@
 
   function closeLightbox() {
     lbOverlay.classList.remove('open');
-    try {
-      lenis = new Lenis({ duration: 1.3, easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-      (function rafRestart(time) { lenis.raf(time); requestAnimationFrame(rafRestart); })(0);
-    } catch(e) { lenis = null; }
-    try {
-      lenis = new Lenis({ duration: 1.3, easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-      (function rafRestart(time) { lenis.raf(time); requestAnimationFrame(rafRestart); })(0);
-    } catch(e) { lenis = null; }
+    if (lenis) { try { lenis.start(); } catch(e) {} }
   }
 
   document.getElementById('process-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('reccs'); });
