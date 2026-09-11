@@ -720,8 +720,8 @@
         { src: 'promo-svultra.jpg',  label: 'Range Rover SV Ultra' },
         { src: 'promo-goodwood.jpg', label: 'Goodwood Festival of Speed' }
       ]
-    }
-    process: {
+    },
+    reccs: {
       title: 'Approved Used — Process & Recommendations',
       imgs: [
         { src: 'rec-1.jpg', label: 'Recommendation 1 — Considered journey into Approved Used' },
@@ -786,7 +786,7 @@
     } catch(e) {}
   }
 
-  document.getElementById('process-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('process'); });
+  document.getElementById('process-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('reccs'); });
   document.getElementById('editions-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('editions'); });
   document.getElementById('editions-card').addEventListener('click', function() { openLightbox('editions'); });
   document.getElementById('event-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('event'); });
