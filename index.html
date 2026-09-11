@@ -231,26 +231,22 @@
     }
     #lb-close:hover { background: rgba(181,64,42,.2); border-color: #B5402A; color: #F0EBE3; }
     #lb-track {
-      display: flex;
-      flex-direction: row;
-      height: calc(100vh - 64px);
-      overflow-x: scroll;
-      overflow-y: visible;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      position: relative;
+      flex: 1;
+      overflow: hidden;
     }
-    #lb-track::-webkit-scrollbar { display: none; }
     .lb-panel {
-      flex-shrink: 0;
-      width: 100vw;
-      height: calc(100vh - 64px);
+      position: absolute;
+      inset: 0;
       overflow-y: scroll;
       overflow-x: hidden;
-      scroll-snap-align: start;
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
       padding: 32px 15vw 80px;
       box-sizing: border-box;
+      display: none;
+    }
+    .lb-panel.active {
+      display: block;
     }
     .lb-panel::-webkit-scrollbar { display: none; }
     .lb-panel img {
@@ -762,33 +758,24 @@
 
   var lbPrevBtn = document.getElementById('lb-prev');
   var lbNextBtn = document.getElementById('lb-next');
+  var lbCurrentIdx = 0;
 
-  function getCurrentIdx() {
-    return Math.round(lbTrack.scrollLeft / window.innerWidth);
-  }
-
-  function updateArrows(idx, total) {
+  function goToPanel(idx) {
+    var panels = lbTrack.querySelectorAll('.lb-panel');
+    var total  = panels.length;
+    if (idx < 0 || idx >= total) return;
+    panels.forEach(function(p, i) {
+      p.classList.toggle('active', i === idx);
+      if (i === idx) p.scrollTop = 0;
+    });
+    lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
     lbPrevBtn.classList.toggle('hidden', idx === 0);
     lbNextBtn.classList.toggle('hidden', idx === total - 1);
+    lbCurrentIdx = idx;
   }
 
-  function updateDots() {
-    var idx = getCurrentIdx();
-    var total = lbDotsEl.querySelectorAll('.lb-dot').length;
-    lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
-    updateArrows(idx, total);
-  }
-
-  lbPrevBtn.addEventListener('click', function() {
-    var idx = getCurrentIdx();
-    if (idx > 0) lbTrack.scrollTo({ left: (idx - 1) * window.innerWidth, behavior: 'smooth' });
-  });
-
-  lbNextBtn.addEventListener('click', function() {
-    var idx = getCurrentIdx();
-    var total = lbDotsEl.querySelectorAll('.lb-dot').length;
-    if (idx < total - 1) lbTrack.scrollTo({ left: (idx + 1) * window.innerWidth, behavior: 'smooth' });
-  });
+  lbPrevBtn.addEventListener('click', function() { goToPanel(lbCurrentIdx - 1); });
+  lbNextBtn.addEventListener('click', function() { goToPanel(lbCurrentIdx + 1); });
 
   function openLightbox(key) {
     var data = lbData[key];
@@ -803,12 +790,11 @@
       lbTrack.appendChild(panel);
       var dot = document.createElement('div');
       dot.className = 'lb-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', function() { lbTrack.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' }); });
+      (function(idx) { dot.addEventListener('click', function() { goToPanel(idx); }); })(i);
       lbDotsEl.appendChild(dot);
     });
-    lbTrack.scrollLeft = 0;
-    lbTrack.addEventListener('scroll', updateDots);
-    updateArrows(0, data.imgs.length);
+    lbCurrentIdx = 0;
+    goToPanel(0);
     lbOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -836,9 +822,9 @@
   lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
   document.addEventListener('keydown', function(e) {
     if (!lbOverlay.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') lbNextBtn.click();
-    if (e.key === 'ArrowLeft')  lbPrevBtn.click();
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowRight')  goToPanel(lbCurrentIdx + 1);
+    if (e.key === 'ArrowLeft')   goToPanel(lbCurrentIdx - 1);
   });
   </script>
 </body>
