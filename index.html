@@ -734,39 +734,73 @@
   lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lbOverlay.classList.contains('open')) closeLightbox(); });
 
-  // Drag scroll on lightbox track (mouse + touch)
+  // ── LIGHTBOX SCROLL HANDLING ──────────────────────────
   var lbDrag = false, lbSX, lbSL;
 
-  // Mouse drag horizontal (between images)
-  lbTrack.addEventListener('mousedown', function(e) { lbDrag = true; lbSX = e.pageX - lbTrack.offsetLeft; lbSL = lbTrack.scrollLeft; lbTrack.style.cursor = 'grabbing'; });
+  function getActiveItem() {
+    // Return whichever lb-img-item is most visible in the track
+    var items = lbTrack.querySelectorAll('.lb-img-item');
+    var trackRect = lbTrack.getBoundingClientRect();
+    var best = null, bestOverlap = -1;
+    items.forEach(function(item) {
+      var r = item.getBoundingClientRect();
+      var overlap = Math.min(r.right, trackRect.right) - Math.max(r.left, trackRect.left);
+      if (overlap > bestOverlap) { bestOverlap = overlap; best = item; }
+    });
+    return best;
+  }
+
+  // Mouse: drag horizontally on track to switch images
+  lbTrack.addEventListener('mousedown', function(e) {
+    lbDrag = true; lbSX = e.pageX; lbSL = lbTrack.scrollLeft;
+    lbTrack.style.cursor = 'grabbing';
+  });
   document.addEventListener('mouseup', function() { lbDrag = false; lbTrack.style.cursor = ''; });
-  lbTrack.addEventListener('mousemove', function(e) { if (!lbDrag) return; e.preventDefault(); lbTrack.scrollLeft = lbSL - (e.pageX - lbTrack.offsetLeft - lbSX) * 1.2; });
+  lbTrack.addEventListener('mousemove', function(e) {
+    if (!lbDrag) return;
+    var dx = e.pageX - lbSX;
+    lbTrack.scrollLeft = lbSL - dx;
+  });
 
-  // Touch on lightbox track — detect direction then scroll accordingly
-  var lbTouchStartX = 0, lbTouchStartY = 0, lbTouchSL = 0, lbTouchTarget = null, lbTouchDir = null;
+  // Mouse wheel: vertical on overlay scrolls the active image, horizontal switches images
+  lbOverlay.addEventListener('wheel', function(e) {
+    if (!lbOverlay.classList.contains('open')) return;
+    var item = getActiveItem();
+    if (Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
+      // Vertical scroll → scroll inside active image
+      if (item) { e.preventDefault(); item.scrollTop += e.deltaY; }
+    } else {
+      // Horizontal scroll → switch between images
+      e.preventDefault();
+      lbTrack.scrollLeft += e.deltaX;
+    }
+  }, { passive: false });
 
-  lbTrack.addEventListener('touchstart', function(e) {
+  // Touch: anywhere on the overlay — detect direction and route accordingly
+  var lbTouchStartX = 0, lbTouchStartY = 0, lbTouchSL = 0, lbTouchItemST = 0, lbTouchDir = null;
+
+  lbOverlay.addEventListener('touchstart', function(e) {
     lbTouchStartX = e.touches[0].clientX;
     lbTouchStartY = e.touches[0].clientY;
-    lbTouchSL = lbTrack.scrollLeft;
-    lbTouchTarget = e.target.closest('.lb-img-item');
+    lbTouchSL  = lbTrack.scrollLeft;
+    var item = getActiveItem();
+    lbTouchItemST = item ? item.scrollTop : 0;
     lbTouchDir = null;
   }, { passive: true });
 
-  lbTrack.addEventListener('touchmove', function(e) {
+  lbOverlay.addEventListener('touchmove', function(e) {
     var dx = e.touches[0].clientX - lbTouchStartX;
     var dy = e.touches[0].clientY - lbTouchStartY;
-
-    if (!lbTouchDir) {
-      lbTouchDir = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
-    }
+    if (!lbTouchDir) lbTouchDir = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
 
     if (lbTouchDir === 'h') {
-      // Horizontal swipe — scroll track between images
       e.preventDefault();
-      lbTrack.scrollLeft = lbTouchSL - dx * 1.2;
+      lbTrack.scrollLeft = lbTouchSL - dx;
+    } else {
+      e.preventDefault();
+      var item = getActiveItem();
+      if (item) item.scrollTop = lbTouchItemST - dy;
     }
-    // Vertical — do nothing, let the browser handle native scroll on the item
   }, { passive: false });
   </script>
 </body>
