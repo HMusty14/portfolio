@@ -231,22 +231,12 @@
     }
     #lb-close:hover { background: rgba(181,64,42,.2); border-color: #B5402A; color: #F0EBE3; }
     #lb-track {
-      position: relative;
       flex: 1;
-      overflow: hidden;
-    }
-    .lb-panel {
-      position: absolute;
-      inset: 0;
       overflow-y: scroll;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       padding: 32px 15vw 80px;
       box-sizing: border-box;
-      display: none;
-    }
-    .lb-panel.active {
-      display: block;
     }
     .lb-panel::-webkit-scrollbar { display: none; }
     .lb-panel img {
@@ -760,41 +750,40 @@
   var lbNextBtn = document.getElementById('lb-next');
   var lbCurrentIdx = 0;
 
-  function goToPanel(idx) {
-    var panels = lbTrack.querySelectorAll('.lb-panel');
-    var total  = panels.length;
-    if (idx < 0 || idx >= total) return;
-    panels.forEach(function(p, i) {
-      p.classList.toggle('active', i === idx);
-      if (i === idx) p.scrollTop = 0;
-    });
+  lbPrevBtn.addEventListener('click', function() { if (lbCurrentIdx > 0) renderPanel(lbCurrentIdx - 1); });
+  lbNextBtn.addEventListener('click', function() { if (lbCurrentData && lbCurrentIdx < lbCurrentData.imgs.length - 1) renderPanel(lbCurrentIdx + 1); });
+
+  var lbCurrentData = null;
+
+  function renderPanel(idx) {
+    var item = lbCurrentData.imgs[idx];
+    lbTrack.innerHTML = '';
+    var img = document.createElement('img');
+    img.src = item.src; img.alt = item.label;
+    img.style.cssText = 'width:100%;height:auto;display:block;border-radius:4px;pointer-events:none;';
+    var lbl = document.createElement('span');
+    lbl.className = 'lb-panel-label'; lbl.textContent = item.label;
+    lbTrack.appendChild(img);
+    lbTrack.appendChild(lbl);
+    lbTrack.scrollTop = 0;
     lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
     lbPrevBtn.classList.toggle('hidden', idx === 0);
-    lbNextBtn.classList.toggle('hidden', idx === total - 1);
+    lbNextBtn.classList.toggle('hidden', idx === lbCurrentData.imgs.length - 1);
     lbCurrentIdx = idx;
   }
 
-  lbPrevBtn.addEventListener('click', function() { goToPanel(lbCurrentIdx - 1); });
-  lbNextBtn.addEventListener('click', function() { goToPanel(lbCurrentIdx + 1); });
-
   function openLightbox(key) {
-    var data = lbData[key];
-    lbTitle.textContent = data.title;
-    lbTrack.innerHTML  = '';
+    lbCurrentData = lbData[key];
+    lbTitle.textContent = lbCurrentData.title;
     lbDotsEl.innerHTML = '';
-    data.imgs.forEach(function(item, i) {
-      var panel = document.createElement('div'); panel.className = 'lb-panel';
-      var img   = document.createElement('img'); img.src = item.src; img.alt = item.label;
-      var lbl   = document.createElement('span'); lbl.className = 'lb-panel-label'; lbl.textContent = item.label;
-      panel.appendChild(img); panel.appendChild(lbl);
-      lbTrack.appendChild(panel);
+    lbCurrentData.imgs.forEach(function(item, i) {
       var dot = document.createElement('div');
       dot.className = 'lb-dot' + (i === 0 ? ' active' : '');
-      (function(idx) { dot.addEventListener('click', function() { goToPanel(idx); }); })(i);
+      (function(idx) { dot.addEventListener('click', function() { renderPanel(idx); }); })(i);
       lbDotsEl.appendChild(dot);
     });
     lbCurrentIdx = 0;
-    goToPanel(0);
+    renderPanel(0);
     lbOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -822,9 +811,9 @@
   lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
   document.addEventListener('keydown', function(e) {
     if (!lbOverlay.classList.contains('open')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowRight')  goToPanel(lbCurrentIdx + 1);
-    if (e.key === 'ArrowLeft')   goToPanel(lbCurrentIdx - 1);
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowRight') lbNextBtn.click();
+    if (e.key === 'ArrowLeft')  lbPrevBtn.click();
   });
   </script>
 </body>
