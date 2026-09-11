@@ -624,7 +624,6 @@
   var lenis = new Lenis({ duration: 1.3, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
-  var raf2;
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
@@ -783,8 +782,7 @@
     // Reinitialise lenis after closing
     try {
       lenis = new Lenis({ duration: 1.3, easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-      function raf2(time) { lenis.raf(time); requestAnimationFrame(raf2); }
-      requestAnimationFrame(raf2);
+      requestAnimationFrame(function rafRestart(time) { lenis.raf(time); requestAnimationFrame(rafRestart); });
     } catch(e) {}
   }
 
