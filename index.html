@@ -271,11 +271,28 @@
       pointer-events: none;
     }
     #lb-dots {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 2010;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 2010; align-items: center;
     }
     .lb-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(240,235,227,.2); cursor: none; transition: background .2s, transform .2s; }
     .lb-dot.active { background: #B5402A; transform: scale(1.3); }
+    #lb-prev, #lb-next {
+      position: fixed; top: 50%; z-index: 2010;
+      transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid rgba(240,235,227,.2);
+      background: rgba(240,235,227,.05);
+      color: rgba(240,235,227,.7); font-size: 18px;
+      cursor: none; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, color .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    #lb-prev { left: 24px; }
+    #lb-next { right: 24px; }
+    #lb-prev:hover, #lb-next:hover {
+      background: rgba(181,64,42,.2); border-color: #B5402A; color: #F0EBE3;
+    }
+    #lb-prev.hidden, #lb-next.hidden { opacity: 0; pointer-events: none; }
 
     /* ── STATS BAND ── */
     .stats-band { margin-top: 80px; background: #131009; padding: 80px 48px; display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; }
@@ -542,9 +559,8 @@
 
           <!-- RANGE ROVER EVENT -->
           <div class="ui-hcard" id="event-card">
-            <div class="ui-mockup-wrap">
-              <div class="ui-mockup-screen ui-mockup-back"><img src="RANGE ROVER - LTO Banner.png" alt="" style="object-fit:contain;background:#1a1210;" /></div>
-              <div class="ui-mockup-screen ui-mockup-mid"><img src="event-countdown.jpg" alt="" style="object-fit:cover;object-position:top;" /></div>
+            <div class="ui-mockup-wrap two-screen">
+              <div class="ui-mockup-screen ui-mockup-back"><img src="event-countdown.jpg" alt="" style="object-fit:cover;object-position:top;" /></div>
               <div class="ui-mockup-screen ui-mockup-front"><img src="event-landing.jpg" alt="" style="object-fit:cover;object-position:top;" /></div>
               <span class="ui-view-hint">View all</span>
             </div>
@@ -586,6 +602,8 @@
         <button id="lb-close">✕</button>
       </div>
     </div>
+    <button id="lb-prev">&#8592;</button>
+    <button id="lb-next">&#8594;</button>
     <div id="lb-track"></div>
     <div id="lb-dots"></div>
   </div>
@@ -725,10 +743,8 @@
     event: {
       title: 'Range Rover Event',
       imgs: [
-        { src: 'event-landing.jpg',              label: 'Event Landing Page' },
-        { src: 'event-countdown.jpg',            label: 'Countdown Page' },
-        { src: 'RANGE ROVER - LTO Banner.png',   label: 'LTO Banner' },
-        { src: 'RANGE ROVER - LTO Banner-1.png', label: 'LTO Banner 2' }
+        { src: 'event-landing.jpg',  label: 'Event Landing Page' },
+        { src: 'event-countdown.jpg', label: 'Countdown Page' }
       ]
     },
     promo: {
@@ -746,10 +762,35 @@
   var lbTitle   = document.getElementById('lb-topbar-title');
   var lbDotsEl  = document.getElementById('lb-dots');
 
-  function updateDots() {
-    var idx = Math.round(lbTrack.scrollLeft / window.innerWidth);
-    lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  var lbPrevBtn = document.getElementById('lb-prev');
+  var lbNextBtn = document.getElementById('lb-next');
+
+  function getCurrentIdx() {
+    return Math.round(lbTrack.scrollLeft / window.innerWidth);
   }
+
+  function updateArrows(idx, total) {
+    lbPrevBtn.classList.toggle('hidden', idx === 0);
+    lbNextBtn.classList.toggle('hidden', idx === total - 1);
+  }
+
+  function updateDots() {
+    var idx = getCurrentIdx();
+    var total = lbDotsEl.querySelectorAll('.lb-dot').length;
+    lbDotsEl.querySelectorAll('.lb-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    updateArrows(idx, total);
+  }
+
+  lbPrevBtn.addEventListener('click', function() {
+    var idx = getCurrentIdx();
+    if (idx > 0) lbTrack.scrollTo({ left: (idx - 1) * window.innerWidth, behavior: 'smooth' });
+  });
+
+  lbNextBtn.addEventListener('click', function() {
+    var idx = getCurrentIdx();
+    var total = lbDotsEl.querySelectorAll('.lb-dot').length;
+    if (idx < total - 1) lbTrack.scrollTo({ left: (idx + 1) * window.innerWidth, behavior: 'smooth' });
+  });
 
   function openLightbox(key) {
     var data = lbData[key];
@@ -769,6 +810,7 @@
     });
     lbTrack.scrollLeft = 0;
     lbTrack.addEventListener('scroll', updateDots);
+    updateArrows(0, data.imgs.length);
     lbOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -794,6 +836,11 @@
   document.getElementById('promo-card').addEventListener('click', function() { openLightbox('promo'); });
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
   lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lbOverlay.classList.contains('open')) closeLightbox(); });
+  document.addEventListener('keydown', function(e) {
+    if (!lbOverlay.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lbNextBtn.click();
+    if (e.key === 'ArrowLeft')  lbPrevBtn.click();
+  });
   </script>
 </body>
