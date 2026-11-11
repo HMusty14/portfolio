@@ -590,6 +590,54 @@
       </div>
     </div>
 
+    <!-- CASE STUDY 03: DEFENDER ACCESSORIES -->
+    <div class="case-study reveal" style="margin-top:32px;">
+      <div class="case-study-hero" style="background:#1A1714;">
+        <img src="defender-1.jpg" alt="Defender Accessories" loading="lazy" style="object-position:center top; object-fit:cover;" />
+        <div class="case-study-hero-overlay"></div>
+        <span class="case-study-counter">03</span>
+        <div class="case-study-hero-content">
+          <span class="cs-badge cs-badge-teal">UX Strategy · Journey Audit</span>
+          <span class="case-study-meta-hero">JLR · Defender<br>Accessories</span>
+        </div>
+      </div>
+      <div class="case-study-body">
+        <div class="cs-main">
+          <h3 class="cs-title" style="color:#B5402A;">Defender Accessories</h3>
+          <p class="cs-client">JLR · UX/UI Designer · Accenture</p>
+          <p class="cs-desc">The brief was to showcase the new Expedition Roof Lights on the Defender nameplate page. Rather than taking it at face value, I looked at how Defender owners actually behave — Instagram, forums, day-to-day observation — and found the same thing everywhere: owners want to make their Defender uniquely theirs. The aftermarket culture around Defender is huge. That became the lens for everything.</p>
+          <div class="tag-row">
+            <span class="tag-pill" style="border:1px solid rgba(181,64,42,.35);color:#B5402A;">UX Research</span>
+            <span class="tag-pill" style="border:1px solid rgba(181,64,42,.35);color:#B5402A;">Journey Audit</span>
+            <span class="tag-pill" style="border:1px solid rgba(181,64,42,.35);color:#B5402A;">Copy Direction</span>
+            <span class="tag-pill" style="border:1px solid rgba(181,64,42,.35);color:#B5402A;">Scroll & Click Data</span>
+            <span class="tag-pill" style="border:1px solid rgba(181,64,42,.35);color:#B5402A;">Show Don't Tell</span>
+          </div>
+          <button id="defender-open-btn" style="display:inline-flex;align-items:center;gap:10px;margin-top:28px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#F0EBE3;background:#B5402A;padding:12px 24px;border-radius:2px;border:none;cursor:none;font-family:'DM Sans',sans-serif;transition:background .2s;">View process ↗</button>
+        </div>
+        <div class="cs-sidebar">
+          <p class="sidebar-label">The Brief</p>
+          <blockquote class="brief-quote" style="border-left:3px solid #B5402A;">"Showcase the new Expedition Roof Lights on the Defender nameplate page."</blockquote>
+          <p class="sidebar-label">The Insight</p>
+          <p class="problem-text">The brief pointed at a product. The real opportunity was in the behaviour around it. Defender owners don't just buy accessories — they modify, they personalise, they build an identity around the vehicle. The existing copy ("Gear up for adventure. Browse our most popular accessories.") was functional and forgettable. It didn't meet owners where they actually were.</p>
+          <hr class="divider" />
+          <p class="sidebar-label">The Approach</p>
+          <div class="rec-item">
+            <span class="rec-number" style="color:#B5402A;opacity:.4;">1</span>
+            <div class="rec-text"><strong>Reframe around personalisation, not product</strong>Rather than signposting the lights, lead with the idea of making it yours. Brief the copywriter on that direction — show don't tell. Surface the product through the lens of identity.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number" style="color:#B5402A;opacity:.4;">2</span>
+            <div class="rec-text"><strong>Audit and fix the accessories journey</strong>The existing path to accessories was fragmented across two routes — via nameplates and via navigation — with unnecessary steps and drop-off points. Mapped the current state, identified the breaks, proposed a tighter flow.</div>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number" style="color:#B5402A;opacity:.4;">3</span>
+            <div class="rec-text"><strong>Brand index page revisions</strong>Proposed changes to the brand index page to better surface the accessories journey from the top of the funnel, using scroll depth and click data to prioritise what needed to move.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- UI COLLECTION -->
     <div class="ui-section reveal">
       <div class="ui-section-header">
@@ -938,6 +986,15 @@
 
   // ── LIGHTBOX ───────────────────────────────────────────
   var lbData = {
+    defender: {
+      title: 'Defender Accessories — Process',
+      imgs: [
+        { src: 'defender-1.jpg', label: 'External perspective & research' },
+        { src: 'defender-2.jpg', label: 'Current nameplate journey' },
+        { src: 'defender-3.jpg', label: 'Proposed nameplate changes' },
+        { src: 'defender-4.jpg', label: 'Brand index page revisions' }
+      ]
+    },
     reccs: {
       title: 'Approved Used — Process & Recommendations',
       imgs: [
@@ -1043,6 +1100,7 @@
   }
 
   document.getElementById('process-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('reccs'); });
+  document.getElementById('defender-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('defender'); });
   document.getElementById('editions-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('editions'); });
   document.getElementById('editions-card').addEventListener('click', function() { openLightbox('editions'); });
   document.getElementById('event-open-btn').addEventListener('click', function(e) { e.stopPropagation(); openLightbox('event'); });
