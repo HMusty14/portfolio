@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Haleem Mustapha — UX/UI Designer</title>
+  <meta property="og:title" content="Haleem Mustapha — UX/UI Designer" />
+  <meta property="og:description" content="UX/UI Designer at Accenture, embedded in JLR's digital team. Product Design graduate, Loughborough University." />
+  <meta property="og:image" content="https://www.haleemmustapha.com/og-image.png" />
+  <meta property="og:url" content="https://www.haleemmustapha.com" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.haleemmustapha.com/og-image.png" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%23B5402A'/><text x='96' y='128' font-family='Playfair Display, Georgia, serif' font-size='96' font-weight='700' fill='%23F0EBE3' text-anchor='middle' letter-spacing='-2'>hm</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -254,13 +261,15 @@
     #lb-track {
       flex: 1;
       min-height: 0;
-      overflow-y: scroll;
+      overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
       padding: 32px 15vw 80px;
       box-sizing: border-box;
+      scrollbar-width: none;
     }
+    #lb-track::-webkit-scrollbar { display: none; }
     /* structured process panels */
     .lb-proc { max-width: 1100px; margin: 0 auto; color: #F0EBE3; font-family: 'DM Sans', sans-serif; }
     .lb-proc-step { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #B5402A; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
@@ -283,7 +292,10 @@
     .lb-stat span { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,235,227,.45); }
     .lb-proc-fig { display: flex; flex-direction: column; gap: 12px; }
     .lb-proc-fig figure { margin: 0; }
-    .lb-proc-fig figure > div { border-radius: 4px; overflow: hidden; display: flex; justify-content: center; }
+    .lb-proc-fig figure > div { border-radius: 4px; overflow: hidden; display: flex; justify-content: center; scrollbar-width: none; }
+    .lb-proc-fig figure > div::-webkit-scrollbar { display: none; }
+    .lb-proc-fig img { scrollbar-width: none; }
+    .lb-proc-fig img::-webkit-scrollbar { display: none; }
     .lb-proc-fig img { max-width: 100%; height: auto; max-height: 560px; object-fit: contain; display: block; }
     .lb-proc-fig figure.tall img { max-height: 420px; }
     .lb-proc-fig figcaption { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,235,227,.4); padding: 8px 2px 0; }
